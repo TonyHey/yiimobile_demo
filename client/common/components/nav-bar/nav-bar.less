@@ -1,0 +1,48 @@
+.header-bar{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    margin: 0;
+    padding: 0 48px;
+    width: 100%;
+    height: 88px;
+    
+    .left-icon, .right-icon{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        i{
+            font-size: 64px;
+            line-height: 64px;
+        }
+    }
+
+    .right-icon{
+        justify-content: flex-end;
+    }
+
+    .nav-title{
+        flex: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color:#242424;
+        font-size: 40px;
+        white-space: nowrap;
+    }
+}
+
+.fix-bar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    border-bottom: 1px solid #e2e2e2;
+}
+
+.no-border {
+    border-bottom: none;
+}

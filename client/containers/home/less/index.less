@@ -1,0 +1,75 @@
+.main {
+    // color: red;
+}
+
+:global(.swiper-container) {
+    background: url("/public/img/lazy.png") 100%/cover no-repeat;
+}
+
+.search{
+    position: relative;
+    height: 44px;
+
+    .search-box{
+        position: absolute;
+        top: -44px;
+        width: 100%;
+        z-index: 4;    
+
+        .search-btn{
+            display: block;
+            font-size: 32px;
+            height: 88px;
+            line-height: 88px;
+            padding: 0 72px;
+            border-radius: 44px;
+            box-shadow: 0px 5px 6px 0 #e0e0e0;
+            background-color: #ffffff;
+            position: relative;
+            color: #242424;
+        }
+
+        .search-icon{
+            font-size: 44px;
+            margin-right: 6px;
+            position: absolute;
+            left: 20px;
+        }
+    }
+}
+
+.nav-box{
+    .nav-tr{
+        display: flex;
+        justify-content: space-between;
+
+        &:first-child{
+            margin-bottom: 48px;
+        }
+    }
+
+    .nav-item{
+        width: 128px;
+        text-align: center;
+
+        .nav-item-title{
+            margin-top: 16px;
+            color: #242424;
+            font-size: 28px;
+        }
+
+        img{
+            width: 64px;
+            height: 64px;
+        }
+    }
+    &.visa-box{
+        .nav-item{
+            width: auto;
+            img{
+                width: 95%;
+                height: 20vw;
+            }
+        }
+    }
+}
