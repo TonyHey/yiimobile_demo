@@ -17,7 +17,7 @@ export const userLogin = () => {
                 }
                 return "success"
             }else{
-                alert("登录失败 " + rs.code)
+                console.log("登录失败 " + rs.code)
                 return "faild"
             }
         }).catch(err => {

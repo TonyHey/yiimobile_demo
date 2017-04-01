@@ -2,16 +2,16 @@
 *   git hook 使用eslint代码检查
 */
 
-var fs = require("fs")
-var path = require("path")
-var root_dir = ""
+const fs = require("fs")
+const path = require("path")
+let root_dir = ""
 
 function CodeCheckPlugin(root) {
     root_dir = root
 }
 
 function shellCode() {
-    var arr = [
+    let arr = [
         "#!/bin/bash",
         "",
         "echo -e '\\033[33m eslint check js code standard... \\033[0m'",
@@ -31,8 +31,8 @@ function shellCode() {
 
 CodeCheckPlugin.prototype.apply = function(compiler) {
     compiler.plugin("compile", function(params) {
-        var hooks_path = path.join(root_dir, ".git/hooks")
-        var file_path = path.join(hooks_path, "pre-commit")
+        let hooks_path = path.join(root_dir, ".git/hooks")
+        let file_path = path.join(hooks_path, "pre-commit")
 
         if(!fs.existsSync(hooks_path)) {
             fs.mkdirSync(hooks_path)

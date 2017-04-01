@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from "react"
 // import SectionMain from '../components/SectionMain'
 // import styles from '../sass/App'
 

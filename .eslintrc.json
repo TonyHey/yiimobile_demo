@@ -31,7 +31,7 @@
         // "linebreak-style": ["error", "unix"],
 
         // use double quotes for string
-        "quotes": [1, "double"],
+        "quotes": [2, "double"],
 
         // require parentheses around arrow function arguments
         "arrow-parens": [2, "as-needed"],

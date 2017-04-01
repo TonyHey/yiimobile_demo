@@ -85,7 +85,7 @@ module.exports = {
             filename: "../dist/client/views/index.html",
             template: "./views/tpl/index.tpl.html"
         }),
-        // new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
+        new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new ProgressBarPlugin({summary: false}), // build progress bar
         new CopyFilePlugin([
             {from: path.resolve(__dirname, "../client/public"), to: "./public"}
