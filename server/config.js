@@ -1,4 +1,4 @@
-var config = {
+const config = {
     port: process.env.PORT || 8888
 }
 

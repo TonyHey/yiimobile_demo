@@ -2,3 +2,4 @@ node_modules
 dist
 client/assets
 client/common/lib
+client/service-worker.js
