@@ -1,9 +1,9 @@
 import React, {Component} from "react"
 import { Link, browserHistory } from "react-router"
 
-import NavBar from "../../common/components/nav-bar"
+import NavBar from "../../components/nav-bar"
 import { imgFilter } from "../../common/tool/filter"
-import styles from "./less/index.less"
+import styles from "./index.less"
 
 
 if (typeof (window) !== "undefined") {
@@ -62,7 +62,7 @@ class Home extends Component {
             loop: true,
             effect: "fade",
             fade: { crossFade: true },
-            preloadImages: false,
+            preloadImages: true,
             lazyLoading: true,
             autoplay: 2500,
             autoplayDisableOnInteraction: false

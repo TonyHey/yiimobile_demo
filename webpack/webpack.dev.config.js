@@ -4,6 +4,8 @@ const pxtorem = require("postcss-pxtorem")
 // const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const BrowserSyncPlugin = require("browser-sync-webpack-plugin")
+const browserSyncConfig = require("../config").browsersync
 const ProgressBarPlugin = require("progress-bar-webpack-plugin")
 const CodeCheckPlugin = require("./CodeCheckPlugin")
 
@@ -31,6 +33,11 @@ module.exports = {
     },
     module: {
         loaders: [
+            {
+                test: /\.js?$/,
+                loader: "babel",
+                exclude: /node_modules/
+            },
             {
                 test: /\.jsx?$/,
                 loader: "babel",
@@ -78,11 +85,12 @@ module.exports = {
             filename: "../dist/client/views/index.html",
             template: "./views/tpl/index.tpl.html"
         }),
-        new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
+        // new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new ProgressBarPlugin({summary: false}), // build progress bar
         new CopyFilePlugin([
             {from: path.resolve(__dirname, "../client/public"), to: "./public"}
-        ])
+        ]),
+        new BrowserSyncPlugin(browserSyncConfig)
         // new ExtractTextPlugin("[name].[contenthash:8].css", {allChunks: true})
     ]
 }

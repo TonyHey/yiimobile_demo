@@ -26,12 +26,12 @@
     // 0=off 1=warn 2=error
     "rules": {
         // 4 spaces
-        "indent": ["error", 4],
+        "indent": [2, 4],
 
         // "linebreak-style": ["error", "unix"],
 
         // use double quotes for string
-        "quotes": ["error", "double"],
+        "quotes": [1, "double"],
 
         // require parentheses around arrow function arguments
         "arrow-parens": [2, "as-needed"],
@@ -89,7 +89,7 @@
         "no-const-assign": 2,
 
         // disallow the use of console in production env
-        "no-console": 1,
+        "no-console": 0,
 
         // disallow the use of alert, confirm, and prompt
         "no-alert": 2,

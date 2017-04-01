@@ -4,15 +4,13 @@ import { Provider } from "react-redux"
 import { Router, match, browserHistory } from "react-router"
 
 import routes from "./routes"
-import configureStore from "./common/redux/store"
+import configureStore from "./redux/store"
 
 import "./assets/less/style.less"
 
 const store = configureStore(window.REDUX_STATE)
 
-console.log("app starting")
-
-console.log("sw cache test")
+console.log("app start")
 
 match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
     render(

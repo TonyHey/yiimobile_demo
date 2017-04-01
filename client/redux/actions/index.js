@@ -1,5 +1,5 @@
 import { ADD_TODO, LOADING, ADD_PUBLIC_DETAIL } from "../constants"
-import API from "../../api"
+import API from "../../common/api"
 
 const addTodo = text => {
     return { type: ADD_TODO, text }

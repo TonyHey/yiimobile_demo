@@ -3,7 +3,7 @@ import {renderToString} from "react-dom/server"
 import {match, RouterContext} from "react-router"
 import {Provider} from "react-redux"
 import routes from "../../client/routes"
-import configureStore from "../../client/common/redux/store"
+import configureStore from "../../client/redux/store"
 
 const store = configureStore()
 

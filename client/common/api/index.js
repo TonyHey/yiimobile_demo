@@ -5,7 +5,7 @@ let reqHeader = new Headers()
 reqHeader.append("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8;")
 reqHeader.append("X-ACCESS-PLATFORM", "mobile")
 
-// 对象转url search字符串
+// 对象转url search字符
 const handleParams = params => {
     if(!params) {
         return ""
