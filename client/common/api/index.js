@@ -5,7 +5,7 @@ let reqHeader = new Headers()
 reqHeader.append("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8;")
 reqHeader.append("X-ACCESS-PLATFORM", "mobile")
 
-// 对象转url search字符
+// add search params
 const handleParams = params => {
     if(!params) {
         return ""
@@ -31,7 +31,7 @@ const GET = (url, params) => {
             return json.data
         }
     }).catch(err => {
-        Promise.reject("接口请求失败")
+        Promise.reject("api request failed")
     })
 }
 
@@ -47,7 +47,7 @@ const POST = (url, params) => {
             return json
         }
     }).catch(err => {
-        Promise.reject("接口请求失败")
+        Promise.reject("api request failed")
     })
 }
 
@@ -63,39 +63,10 @@ const API = {
     },
     productList: (type, params) => {
         return GET("/search/" + type + "/product_list/1.0", params)
-    }
-}
-
-export const API_Product = {
-    detail: pID => {
-        return GET(`/product/${pID}/detail`)
-    }
-}
-
-export const API_Comment = {
-    product_comment: pID => {
-        return GET(`/product/multiday-tour/${pID}/comment`, {limit: 1000})
-    }
-}
-
-export const API_user = {
-    info: userID => {
-        if(!reqHeader.get("X-ACCESS-TOKEN")) {
-            reqHeader.append("X-ACCESS-TOKEN", `${localStorage.getItem("access_token")}`)
-        }
-        return GET(`/user/${userID}/new`)
     },
-    accountLogin: param => {
-        param = encodeURIComponent(param)
-        return POST("/user/sso", {cookie: param})
-    }
-}
-
-export const API_Visa = {
-    detail: country => {
-        return GET("/visa/detail", { country: country })
+    testPost: params => {
+        return POST("url", params)
     }
 }
 
 export default API
-

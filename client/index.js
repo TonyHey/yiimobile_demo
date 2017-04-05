@@ -10,7 +10,7 @@ import "./assets/less/style.less"
 
 const store = configureStore(window.REDUX_STATE)
 
-console.log("app start")
+console.log("app starting")
 
 match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
     render(
