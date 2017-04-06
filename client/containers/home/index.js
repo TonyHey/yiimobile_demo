@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import { Link } from "react-router"
 
-import NavBar from "../../components/nav-bar"
+import NavBar from "../../common/components/nav-bar"
 import { imgFilter } from "../../common/tool/filter"
 import styles from "./index.less"
 

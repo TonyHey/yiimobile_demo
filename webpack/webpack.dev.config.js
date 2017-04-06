@@ -40,6 +40,7 @@ module.exports = {
                     "babel"
                 ],
                 exclude: /node_modules/
+
             },
             {
                 test: /\.less$/,

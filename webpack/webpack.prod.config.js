@@ -6,6 +6,7 @@ const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const pxtorem = require("postcss-pxtorem")
 const autoprefixer = require("autoprefixer")
+const CodeCheckPlugin = require("./CodeCheckPlugin")
 
 let clientConfig, serverConfig, swConfig
 
@@ -36,7 +37,7 @@ clientConfig = {
                 exclude: /node_modules/,
                 loader: "babel",
                 query: {
-                    presets: ["es2015", "react"]
+                    presets: ["es2015", "react", "stage-0"]
                 }
             },
             {
@@ -90,9 +91,11 @@ clientConfig = {
         new HtmlWebpackPlugin({
             filename: "../views/index.html",
             template: "./views/tpl/index.tpl.html",
+            favicon: "./client/public/img/favicon.ico",
             chunksSortMode: "none"
         }),
         new ExtractTextPlugin("[name].[contenthash:8].css", {allChunks: true}),
+        new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new CopyFilePlugin([
             {from: path.resolve(__dirname, "../client/public"), to: "../public"}
         ])
