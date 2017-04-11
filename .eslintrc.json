@@ -121,6 +121,8 @@
         // disallow unnecessary boolean casts
         "no-extra-boolean-cast": 2,
 
+        "no-case-declarations": 0,
+
         // 空行不能够超过2行
         // disallow multiple empty lines
         "no-multiple-empty-lines": [2, { "max": 2 }],
