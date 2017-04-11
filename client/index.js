@@ -8,9 +8,9 @@ import configureStore from "./redux/store"
 
 import "./assets/less/style.less"
 
-const store = configureStore(window.REDUX_STATE)
+const store = configureStore()
 
-console.log("app start")
+console.log("app starting")
 
 match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
     render(

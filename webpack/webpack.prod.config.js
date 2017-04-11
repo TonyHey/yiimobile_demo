@@ -42,7 +42,7 @@ clientConfig = {
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract("style", "css?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss!less")
+                loader: ExtractTextPlugin.extract("style", "css?camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss!less")
             },
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,

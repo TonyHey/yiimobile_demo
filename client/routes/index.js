@@ -1,10 +1,9 @@
-// // Hook for server
+// Hook for server
 if (typeof require.ensure !== "function") {
     require.ensure = function(dependencies, callback) {
         callback(require)
     }
 }
-
 const routes = {
     childRoutes: [{
         path: "/",
@@ -12,8 +11,8 @@ const routes = {
         indexRoute: {
             getComponent(nextState, callback) {
                 require.ensure([], require => {
-                    callback(null, require("../containers/home").default)
-                }, "home")
+                    callback(null, require("../containers/todo").default)
+                }, "index")
             }
         },
         childRoutes: [
@@ -31,6 +30,14 @@ const routes = {
                     require.ensure([], require => {
                         callback(null, require("../containers/counter").default)
                     }, "counter")
+                }
+            },
+            {
+                path: "home",
+                getComponent(nextState, callback) {
+                    require.ensure([], require => {
+                        callback(null, require("../containers/home").default)
+                    }, "home")
                 }
             }
         ]
