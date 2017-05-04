@@ -1,4 +1,6 @@
-import { CDN } from "../api/config"
+import config from "../../../config/index"
+
+const CDN = config.cdn.url
 /**
  * img url处理，添加cdn地址
  *
@@ -15,54 +17,51 @@ export function imgFilter(data, w, h, q = 85, d = false) {
     const re = new RegExp(reg)
     const dpr = d ? window.devicePixelRatio : 1
 
-    let img_url = ""
+    let imgUrl = ""
 
-    if(!re.test(data)) {
-        img_url = CDN + data
-    }else{
-        img_url = data
+    if (!re.test(data)) {
+        imgUrl = CDN + data
+    } else {
+        imgUrl = data
     }
 
-    if(w & h) {
-        return img_url + "?imageView2/1/w/" + Math.round(w * dpr) + "/h/" + Math.round(h * dpr) + "/q/" + Number(q) + "/format/jpg"
-    }else{
-        return img_url
+    if (w && h) {
+        return imgUrl + "?imageView2/1/w/" + Math.round(w * dpr) + "/h/" + Math.round(h * dpr) + "/q/" + Number(q) + "/format/jpg"
     }
 
+    return imgUrl
 }
 
 export function liveFilter(language) {
-    if(language) {
+    if (language) {
         return language.substring(0, language.length - 5)
     }
-}
-
-export function htmlFilter(content) {
-    content = content && content.replace(/\n/g, "<br />") // /n对应替换成<br/>以便插入
-    return content
+    return false
 }
 
 // 产品类型判断
 export function productTypeFilter(productType) {
     const type = {}
-    switch(productType) {
+    switch (productType) {
     case "ticketBroadway":
     case "ticketSeason":
     case "ticketNormal":
     case "ticket":
-        Object.assign(type, {info: "ticket", url: "daytour"})
+        Object.assign(type, { info: "ticket", url: "daytour" })
         break
     case "tourHelicopter":
     case "tourSimWifi":
     case "tourNormal":
     case "oneday":
-        Object.assign(type, {info: "oneday", url: "daytour"})
+        Object.assign(type, { info: "oneday", url: "daytour" })
         break
     case "multiDayNormal":
     case "multiday":
-        Object.assign(type, {info: "multiday", url: "multiDayNormal"})
+        Object.assign(type, { info: "multiday", url: "multiDayNormal" })
         break
+    default: break
     }
+
     return type
 }
 
@@ -72,18 +71,20 @@ export function productTypeFilter(productType) {
 */
 export function pTypeIndexFilter(productInfo) {
     let productType = ""
-    if(productInfo) {
+    if (productInfo) {
         if (!productInfo.is_ticket && productInfo.product_entity_type === "1") {
             productType = "multiDayNormal"
-        }else if (productType.is_flight) {
+        } else if (productType.is_flight) {
             productType = "tourHelicopter"
         } else if (productType.is_sim || productType.is_wifi) {
             productType = "tourSimWifi"
         } else if (productType.is_broadway_tour && productType.is_ticket) {
             productType = "ticketBroadway"
-        } else if (productType.is_ticket && productType.is_season_tour && !productType.is_broadway_tour) {
+        } else if (productType.is_ticket && productType.is_season_tour
+                    && !productType.is_broadway_tour) {
             productType = "ticketSeason"
-        } else if (!(productType.is_broadway_tour || productType.is_season_tour) && productType.is_ticket) {
+        } else if (!(productType.is_broadway_tour || productType.is_season_tour)
+                    && productType.is_ticket) {
             productType = "ticketNormal"
         } else if (productType.type && productType.type === "multidaytour") { // 收藏列表url
             productType = "multiDayNormal"
@@ -96,10 +97,25 @@ export function pTypeIndexFilter(productInfo) {
 
 // 数字星期转换为文字星期
 export function mathWeekExchange(week) {
-    let wordWeek = ["", "周日", "周一", "周二", "周三", "周四", "周五", "周六"]
+    const wordWeek = ["", "周日", "周一", "周二", "周三", "周四", "周五", "周六"]
     let wordString = ""
     week.map((item, index) => {
         wordString += (wordWeek[week[index + 1]] + "、")
     })
     return wordString
+}
+
+// added from old MSite
+
+export function htmlFilter(content) {
+    const contentHtml = content && content.replace(/\n/g, "<br />")
+    return contentHtml
+}
+
+export function ucwords(content) {
+    return content.replace(/\w+/g, a => a.charAt(0).toUpperCase() + a.slice(1).toLowerCase())
+}
+
+export function clearhtml(content) {
+    return content.replace(/(<([^>]+)>)/ig, "")
 }

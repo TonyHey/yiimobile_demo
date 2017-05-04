@@ -1,21 +1,33 @@
 .header-bar{
     display: flex;
     align-items: center;
-    background-color: #fff;
     margin: 0;
-    padding: 0 48px;
+    padding: 12px 24px 0;
     width: 100%;
     height: 88px;
-    
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    background: #FFFFFF;
+    border-bottom: 1px solid #efefef;
     .left-icon, .right-icon{
         flex: 1;
         display: flex;
         align-items: center;
         height: 100%;
 
+        .logo {
+            width: 250px;
+        }
+
         i{
             font-size: 64px;
             line-height: 64px;
+        }
+        img {
+            width: 64px;
+            height: 64px;
         }
     }
 

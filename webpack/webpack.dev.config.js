@@ -1,6 +1,7 @@
 const webpack = require("webpack")
 const path = require("path")
 const pxtorem = require("postcss-pxtorem")
+const autoprefixer = require("autoprefixer")
 // const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
@@ -32,49 +33,56 @@ module.exports = {
         publicPath: "/"
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loaders: [
+                use: [
                     "react-hot-loader",
-                    "babel"
+                    "babel-loader"
                 ],
                 exclude: /node_modules/
 
             },
             {
                 test: /\.less$/,
-                loaders: [
-                    "style",
-                    "css?modules&camelCase&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:8]",
-                    "less"
+                use: [
+                    "style-loader",
+                    "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss-loader!less-loader"
                 ]
             },
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                loader: "url?limit=8000"
+                use: "url-loader?limit=8000&name=[name].[hash:base64:8].[ext]"
             },
             {
                 test: /\.html$/,
-                loader: "html?minimize=false"
+                loader: "html-loader?minimize=false"
             }
         ]
     },
     resolve: {
-        extensions: ["", ".web.js", ".js", ".jsx", ".json", ".less"],
-        modulesDirectories: ["node_modules", path.join(__dirname, "../node_modules")]
+        extensions: [".web.js", ".js", ".jsx", ".json", ".less"],
+        modules: ["node_modules", path.join(__dirname, "../node_modules")]
     },
-    postcss: [
-        pxtorem({rootValue: 100, propWhiteList: []})
-    ],
     plugins: [
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                context: __dirname,
+                postcss: [
+                    autoprefixer({
+                        browsers: ["last 2 versions", "Firefox ESR", "> 1%", "ie >= 8", "iOS >= 8", "Android >= 4"]
+                    }),
+                    pxtorem({ rootValue: 100, propWhiteList: [] })
+                ]
+            }
+        }),
         // new webpack.optimize.OccurenceOrderPlugin(), // allocation the ID to components
         new webpack.optimize.CommonsChunkPlugin({ // remove duplicated library dependencies
             names: ["vendor", "mainfest"],
             filename: "[name].js"
         }),
         new webpack.HotModuleReplacementPlugin(), // hot reload
-        new webpack.NoErrorsPlugin(), // ignore the error while complie and log error
+        new webpack.NoEmitOnErrorsPlugin(), // ignore the error while complie and log error
         new webpack.DefinePlugin({
             "process.env": {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
@@ -85,9 +93,9 @@ module.exports = {
             template: "./views/tpl/index.tpl.html"
         }),
         new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
-        new ProgressBarPlugin({summary: false}), // build progress bar
+        new ProgressBarPlugin({ summary: false }), // build progress bar
         new CopyFilePlugin([
-            {from: path.resolve(__dirname, "../client/public"), to: "./public"}
+            { from: path.resolve(__dirname, "../client/public"), to: "./public" }
         ])
         // new BrowserSyncPlugin(browserSyncConfig)
         // new ExtractTextPlugin("[name].[contenthash:8].css", {allChunks: true})

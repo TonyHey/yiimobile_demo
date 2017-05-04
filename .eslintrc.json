@@ -5,7 +5,7 @@
         "es6": true
     },
     "parser": "babel-eslint",
-    "extends": "eslint:recommended",
+    "extends": "airbnb",
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
@@ -25,289 +25,142 @@
     },
     // 0=off 1=warn 2=error
     "rules": {
-        // 4 spaces
+        // 
+        /**
+         * This rule enforces consistent use of trailing commas in object and array literals.
+         * @see http://eslint.org/docs/rules/comma-dangle
+         * disallow trailing commas to last item
+         */
+        "comma-dangle": 0,
+
+        /**
+         * This rule enforces consistent line endings independent of operating system, VCS, or editor used across your codebase.
+         * @see http://eslint.org/docs/rules/linebreak-style
+         */
+        "linebreak-style": 0,
+        /**
+         * This rule can enforce or disallow the use of named function expressions.
+         * @see http://eslint.org/docs/rules/func-names
+         */
+        "func-names": 0,
+
+        /**
+         * This rule is aimed to flag usage of + operators with strings.
+         * @see http://eslint.org/docs/rules/prefer-template
+         */
+        "prefer-template": 0,
+
+        /**
+         * Enforces return statements in callbacks of array’s methods 
+         * @see http://eslint.org/docs/rules/array-callback-return
+         */
+        "array-callback-return": 0,
+
+        /**
+         * This rule enforces a consistent indentation style. The default style is 4 spaces. 
+         * @see http://eslint.org/docs/rules/indent
+         */
         "indent": [2, 4],
 
-        // "linebreak-style": ["error", "unix"],
-
-        // use double quotes for string
+        /**
+         * This rule enforces the consistent use of either backticks, double, or single quotes.
+         * @see http://eslint.org/docs/rules/quotes
+         */
         "quotes": [2, "double"],
 
-        // require parentheses around arrow function arguments
-        "arrow-parens": [2, "as-needed"],
-
-        // enforce consistent spacing before and after the arrow in arrow functions
-        "arrow-spacing": [2, { "before": true, "after": true }],
-
-        // 如果代码块是单行的时候，代码块内部前后需要留一个空格
-        // enforce consistent spacing inside single-line blocks
-        "block-spacing": [2, "always"],
-
-        // 在定义对象或数组时，最后一项不能加逗号
-        // disallow trailing commas to last item
-        "comma-dangle": [2, "never"],
-
-        // 在写逗号时，逗号前面不需要加空格，而逗号后面需要添加空格
-        // enforce consistent spacing after commas
-        "comma-spacing": [2, { "before": false, "after": true }],
-
-        // 如果逗号可以放在行首或行尾时，那么请放在行尾
-        // enforce consistent comma style
-        "comma-style": [2, "last"],
-
-        // 在constructor函数中，如果classes是继承其他class，那么请使用super。否则不使用super
-        // require super() calls in constructors if extend from other class
-        "constructor-super": 2,
-
-        // 在if-else语句中，如果if或else语句后面是多行，那么必须加大括号。如果是单行就应该省略大括号。
-        // enforce consistent brace style for all control statements
-        "curly": [2, "multi-line"],
-
-        // 该规则要求代码最后面需要留一空行，（仅需要留一空行）
-        // require newline at the end of files
-        "eol-last": 2,
-
-        // 使用=== !== 代替== != .
-        // require the use of === and !==
-        "eqeqeq": [2, "allow-null"],
-
-        // 该规则规定了在对象字面量语法中，key和value之间的空白，冒号前不要空格，冒号后面需要一个空格
-        // enforce consistent spacing between keys and values in object literal properties
-        // require spacing after colon
-        "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
-
-        // 禁止覆盖class命名，也就是说变量名不要和class名重名
-        // disallow reassigning class members
-        "no-class-assign": 2,
-
-        // 在条件语句中不要使用赋值语句
-        // disallow assignment operators in conditional expressions
-        "no-cond-assign": 2,
-
-        // const申明的变量禁止修改
-        // disallow reassigning const variables
-        "no-const-assign": 2,
-
-        // disallow the use of console in production env
-        "no-console": 0,
-
-        // disallow the use of alert, confirm, and prompt
-        "no-alert": 2,
-
-        // require let or const instead of var
-        "no-var": 1,
-
-        // 函数参数禁止重名
-        // disallow reassigning const variables
-        "no-dupe-args": 2,
-
-        // class中的成员禁止重名
-        // disallow duplicate class members
-        "no-dupe-class-members": 2,
-
-        // 在对象字面量中，禁止使用重复的key
-        // disallow duplicate keys in object literals
-        "no-dupe-keys": 2,
-
-        // 在switch语句中禁止重复的case
-        // disallow duplicate case labels
-        "no-duplicate-case": 2,
-
-        // 禁止使用多余的圆括号
-        // disallow unnecessary parentheses
-        "no-extra-parens": [2, "functions"],
-
-        // 在一个本来就会自动转化为布尔值的上下文中就没必要再使用!! 进行强制转化了。
-        // disallow unnecessary boolean casts
-        "no-extra-boolean-cast": 2,
-
-        "no-case-declarations": 0,
-
-        // 空行不能够超过2行
-        // disallow multiple empty lines
-        "no-multiple-empty-lines": [2, { "max": 2 }],
-
-        // 禁止使用eval函数
-        // disallow the use of eval()
-        "no-eval": 2,
-
-        // 禁止使用类eval的函数
-        // disallow the use of eval()-like methods
-        "no-implied-eval": 2,
-
-        // 禁止在不必要的时候使用bind函数
-        // disallow unnecessary calls to .bind()
-        "no-extra-bind": 2,
-
-        // 这条规则，简单来说就是在case语句中尽量加break，避免不必要的fallthrough错误，如果需要fall through，那么看官网。
-        // disallow fallthrough of case statements
-        "no-fallthrough": 2,
-
-        // 禁止对函数名重新赋值
-        // disallow reassigning function declarations
-        "no-func-assign": 2,
-
-        // RegExp构造函数中禁止使用非法正则语句
-        // disallow invalid regular expression strings in RegExp constructors
-        "no-invalid-regexp": 2,
-
-        // 禁止无意得把全局对象当函数调用了，比如下面写法错误的：Math(), JSON()
-        // disallow calling global object properties as functions
-        "no-obj-calls": 2,
-
-        // 不要重复申明一个变量
-        // disallow variable redeclaration
-        "no-redeclare": 2,
-
-        // return语句中不要写赋值语句
-        // disallow assignment operators in return statements
-        "no-return-assign": 2,
-
-        // 正则表达式中不要使用空格
-        // disallow multiple spaces in regular expressions
-        "no-regex-spaces": 2,
-
-        // 禁止对一些关键字或者保留字进行赋值操作，比如NaN、Infinity、undefined、eval、arguments等。
-        // disallow identifiers from shadowing restricted names
-        "no-shadow-restricted-names": 2,
-
-        // 函数调用时，圆括号前面不能有空格
-        // disallow spacing between function identifiers and their invocations
-        "func-call-spacing": 2,
-
-        // 在调用super之前不能使用this对象
-        // disallow this/super before calling super() in constructors
-        "no-this-before-super": 2,
-
-        // 行末禁止加空格
-        // disallow trailing whitespace at the end of lines
-        "no-trailing-spaces": 2,
-
-        // 禁止使用没有定义的变量，除非在／＊global＊／已经申明
-        // disallow the use of undeclared variables unless mentioned in /*global */ comments
-        "no-undef": 2,
-
-        // 禁止把undefined赋值给一个变量
-        // disallow initializing variables to undefined
-        "no-undef-init": 2,
-
-        // 禁止在不需要分行的时候使用了分行
-        // disallow confusing multiline expressions
-        "no-unexpected-multiline": 2,
-
-        // 没有执行不到的代码
-        // disallow unreachable code after return, throw, continue, and break statements
-        "no-unreachable": 2,
-
-        // 没有定义了没有被使用到的变量
-        // disallow unused variables
-        "no-unused-vars": [2, { "vars": "all", "args": "none" }],
-
-        // 不加分号
-        // disallows semicolons as the end of statements (except to disambiguate statements beginning with [, (, /, +, or -)
+        /**
+         * This rule enforces consistent use of semicolons.
+         * @see http://eslint.org/docs/rules/semi
+         * disallows semicolons as the end of statements (except to disambiguate statements beginning with [, (, /, +, or -)
+         */
         "semi": ["error","never"],
 
-        // 该规则规定了分号前后的空格，具体规定如下。
-        // enforces spacing after semicolons and disallows spacing before semicolons.
-        "semi-spacing": [2, { "before": false, "after": true }],
+        /**
+         * This rule enforces parentheses around arrow function parameters regardless of arity.
+         * @see http://eslint.org/docs/rules/arrow-parens
+         * require parentheses around arrow function arguments
+         */
+        "arrow-parens": [2, "as-needed"],
 
-        // 代码块前面需要加空格
-        // enforce consistent spacing before blocks
-        "space-before-blocks": [2, "always"],
+        // allow the use of console in production env
+        /**
+         * This rule disallows calls to methods of the console object.
+         * @see http://eslint.org/docs/rules/no-console
+         * allow the use of console in production env
+         */
+        "no-console": 0,
 
-        // 函数圆括号前面需要加空格
-        // disallows any space followed by the ( of arguments.
-        "space-before-function-paren": [2, "never"],
+        /**
+         * This rule requires all calls to require() to be at the top level of the module, similar to ES6 import and export statements, which also can occur only at the top level.
+         * @see http://eslint.org/docs/rules/global-require
+         * require all requires be top-level
+         */
+        "global-require": 0,
 
-        // 圆括号内部不需要加空格
-        // enforces zero spaces inside of parentheses
-        "space-in-parens": [2, "never"],
+        /**
+         * This rule aims to enforce consistent spacing before function parentheses and as such, will warn whenever whitespace doesn’t match the preferences specified.
+         * @see http://eslint.org/docs/rules/space-before-function-paren
+         * require or disallow space before function opening parenthesis
+         */
+        "space-before-function-paren": ["error", {
+            "anonymous": "never",
+            "named": "never",
+            "asyncArrow": "always"
+        }],
 
-        // 操作符前后需要加空格
-        // require spacing around infix operators
-        "space-infix-ops": 2,
-
-        // 一元操作符前后是否需要加空格，单词类操作符需要加，而非单词类操作符不用加
-        // enforce consistent spacing before or after unary operators
-        "space-unary-ops": [2, { "words": true, "nonwords": false }],
-
-        // 评论符号｀／*｀ ｀／／｀，后面需要留一个空格
-        // one spacing after the // or /* in a comment
-        "spaced-comment": [2, "always", { "markers": ["global", "globals", "eslint", "eslint-disable", "*package", "!", ","] }],
-
-        // 推荐使用isNaN方法，而不要直接和NaN作比较
-        // require calls to isNaN() when checking for NaN
-        "use-isnan": 2,
-
-        // 在使用typeof操作符时，作比较的字符串必须是合法字符串eg:'string' 'object'
-        // enforce comparing typeof expressions against valid strings
-        "valid-typeof": 2,
-
-        // 立即执行函数需要用圆括号包围
-        // require parentheses around immediate function invocations
-        "wrap-iife": [2, "any"],
-
-        // yoda条件语句就是字面量应该写在比较操作符的左边，而变量应该写在比较操作符的右边。
-        // 而下面的规则要求，变量写在前面，字面量写在右边
-        // disallow “Yoda” conditions
-        "yoda": [2, "never"],
-
-        // JSX里的数组需要有key
-        // require key to array in JSX
-        "react/jsx-key": 2,
-
-        // 防止React被错误地标记为未使用
-        "react/jsx-uses-react": 2,
-
-        // 防止在JSX中使用的变量被错误地标记为未使用
-        "react/jsx-uses-vars": 2,
-
-        // JSX 标签的空格
-        // 4 spaces for JSX element
+        /**
+         * This rule is aimed to enforce consistent indentation style. The default style is 4 spaces.
+         * @see https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-indent.md
+         */
         "react/jsx-indent": [2, 4],
 
-        // JSX 里不能使用bind, 可以使用箭头函数
-        // disallowed .bind() in JSX
-        "react/jsx-no-bind": [2, {"allowArrowFunctions": true}],
+        /**
+         *
+         * @see https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-filename-extension.md
+         * only .jsx files may have JSX
+         */
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
 
-        // 不能直接修改this.state
-        // disallowed change this.state immediately
-        "react/no-direct-mutation-state": 2,
+        // 
+        /**
+         * 
+         * @see https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
+         * It is okay to import devDependencies in tests.
+         */
+        "import/no-extraneous-dependencies": 0,
 
-        // 禁止把ReactDOM.render()当做返回值
-        // disallowed return ReactDOM.render()
-        "react/no-render-return-value": 2,
+        /**
+         *
+         * @see https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-indent-props.md
+         * Validate props indentation in JSX, also 4 spaces
+         */
+        "react/jsx-indent-props": ["error", 4],
 
-        // render 需要 return
-        // render requires return
-        "react/require-render-return": 2,
+        /**
+         * @see https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-dynamic-require.md
+         * allows require() calls with expressions
+         */
+        "import/no-dynamic-require": 0,
 
-        // 在JSX属性中强制或禁止花括号中的空格
-        // disallowed spacing bettween the {}
-        "react/jsx-curly-spacing": [2, "never"],
+        /**
+         * 
+         * @see https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-array-index-key.md
+         * Prevent usage of Array index in keys
+         */
+        "react/no-array-index-key": 0,
 
-        // 在JSX中关闭括号之前验证间距
-        // disallowed spacing before the >
-        "react/jsx-space-before-closing": [2, "always"],
+        /**
+         * 
+         * @see https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md
+         * try to add role, but still warm, so off this rule
+         */
+        "jsx-a11y/no-static-element-interactions": 0,
 
-        // 防止没有子级的组件的额外结束标记
-        // prevent unless extra end-label
-        "react/self-closing-comp": 2,
-
-        // 禁止重复的props
-        // disallowed duplicate props
-        "react/jsx-no-duplicate-props": 2,
-
-        // 组件需要先定义再使用
-        // require define component before use
-        "react/jsx-no-undef": 2,
-
-        // 避免使用findDOMNode，Facebook会弃用
-        // forbidden to use findDOMNode
-        "react/no-find-dom-node": 2,
-
-        // 禁止使用html保留字标签
-        // disallowed use html Element to define component
-        "react/no-unknown-property": 2
+        /**
+         * Prevent missing props validation in a React component definition (prop-types)
+         * @see https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prop-types.md
+         * 
+         */
+        "react/prop-types": 1
     }
 }

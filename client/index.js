@@ -1,22 +1,21 @@
 import React from "react"
 import { render } from "react-dom"
 import { Provider } from "react-redux"
-import { Router, match, browserHistory } from "react-router"
+import { BrowserRouter, Route } from "react-router-dom"
 
-import routes from "./routes"
 import configureStore from "./redux/store"
+import routes from "./route"
 
 import "./assets/less/style.less"
 
-const store = configureStore()
+const store = configureStore(window.REDUX_STATE)
 
 console.log("app starting")
 
-match({history: browserHistory, routes}, (error, redirectLocation, renderProps) => {
-    render(
+render((
+    <BrowserRouter>
         <Provider store={store}>
-            <Router {...renderProps} />
-        </Provider>,
-        document.getElementById("APP")
-    )
-})
+            <Route {...routes} />
+        </Provider>
+    </BrowserRouter>
+), document.getElementById("APP"))

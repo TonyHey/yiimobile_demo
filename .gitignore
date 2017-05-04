@@ -1,7 +1,11 @@
 node_modules
 dist
+client/common/api/dev.js
 .yarn-error.log
 .vscode
 .idea
 *.log
 *.DS_Store
+
+# local configuration
+/config/local.js

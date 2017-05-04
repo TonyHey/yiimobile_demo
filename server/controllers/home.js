@@ -5,7 +5,7 @@ const Banner = {
 
     async show(ctx) {
         ctx.body = {
-            "name": "123"
+            name: "123"
         }
     }
 }

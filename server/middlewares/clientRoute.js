@@ -1,29 +1,34 @@
 import React from "react"
-import {renderToString} from "react-dom/server"
-import {match, RouterContext} from "react-router"
-import {Provider} from "react-redux"
-import routes from "../../client/routes"
+import { renderToString } from "react-dom/server"
+import { StaticRouter, Route, redirect } from "react-router-dom"
+import { Provider } from "react-redux"
+import routes from "../../client/route"
 import configureStore from "../../client/redux/store"
 
 const store = configureStore()
 
 async function clientRoute(ctx, next) {
-    let _renderProps
-
-    match({routes, location: ctx.url}, (error, redirectLocation, renderProps) => {
-        _renderProps = renderProps
-    })
-
-    if (_renderProps) {
-        await ctx.render("index", {
-            title: "M",
-            root: renderToString(
+    // response render to content-type /html|xhtml|xml/ only
+    if (ctx.header.accept && /html|xhtml|xml/.test(ctx.header.accept)) {
+        const context = {}
+        const markup = renderToString(
+            <StaticRouter context={context} location={ctx.url}>
                 <Provider store={store}>
-                    <RouterContext {..._renderProps} />
+                    <Route {...routes} />
                 </Provider>
-            ),
-            state: store.getState()
-        })
+            </StaticRouter>
+        )
+
+        if (context.url) {
+            // Somewhere a `<Redirect>` was rendered
+            redirect(301, context.url)
+        } else {
+            await ctx.render("index", {
+                title: "M",
+                root: markup,
+                state: store.getState()
+            })
+        }
     } else {
         await next()
     }

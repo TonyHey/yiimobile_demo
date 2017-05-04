@@ -1,4 +1,3 @@
-"use strict"
 import "babel-polyfill"
 import path from "path"
 import Koa from "koa"
@@ -17,17 +16,17 @@ app.use(logger())
 
 // Serve static files
 app.use(server(path.resolve(__dirname, "..", "dist/client")))
-app.use(views(path.resolve(__dirname, "../dist/client/views"), {map: {html: "ejs"}}))
+app.use(views(path.resolve(__dirname, "../dist/client/views"), { map: { html: "ejs" } }))
 
 // Routes
 app.use(clientRoute)
 routers(app)
 
-app.listen(config.port, function() {
+app.listen(config.port, () => {
     console.log("listen port " + config.port)
 })
 
-app.on("error", function(err) {
+app.on("error", err => {
     console.log("server error", err)
 })
 

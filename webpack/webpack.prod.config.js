@@ -8,10 +8,9 @@ const pxtorem = require("postcss-pxtorem")
 const autoprefixer = require("autoprefixer")
 const CodeCheckPlugin = require("./CodeCheckPlugin")
 
-let clientConfig, serverConfig, swConfig
+// process.traceDeprecation = true
 
-
-clientConfig = {
+const clientConfig = {
     context: path.resolve(__dirname, ".."),
     entry: {
         bundle: "./client",
@@ -31,47 +30,55 @@ clientConfig = {
     },
     module: {
         noParse: [/moment-with-locales|moment/],
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: "babel",
-                query: {
-                    presets: ["es2015", "react", "stage-0"]
-                }
+                use: [{
+                    loader: "babel-loader",
+                    options: {
+                        presets: [["react"], ["es2015", { modules: false }], ["stage-0"]]
+                    }
+                }]
             },
             {
                 test: /\.less$/,
-                loader: ExtractTextPlugin.extract("style", "css?camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss!less")
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss-loader!less-loader"
+                })
             },
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
-                loader: "url?limit=8000"
+                use: "url-loader?limit=8000&name=[name].[hash:base64:8].[ext]"
             },
             {
                 test: /\.html$/,
-                loader: "html?minimize=false"
+                use: "html-loader?minimize=false"
             }
         ]
     },
     resolve: {
         alias: {
-            "react-router": path.join(path.resolve(__dirname, "../node_modules"), "/react-router/lib/index.js"),
-            "moment": "moment/min/moment-with-locales.min.js"
+            moment: "moment/min/moment-with-locales.min.js"
         },
-        modulesDirectories: ["node_modules", path.join(__dirname, "../node_modules")],
-        extensions: ["", ".web.js", ".js", ".json", ".jsx"]
+        modules: [path.join(__dirname, "../node_modules"), "node_modules"],
+        extensions: [".web.js", ".js", ".json", ".jsx"]
     },
-    postcss: [
-        autoprefixer({
-            browsers: ["last 2 versions", "Firefox ESR", "> 1%", "ie >= 8", "iOS >= 8", "Android >= 4"]
-        }),
-        pxtorem({rootValue: 100, propWhiteList: []})
-    ],
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(), // allocation the ID to components
-        new webpack.optimize.DedupePlugin(), // remove duplicated library dependencies
-        new webpack.optimize.CommonsChunkPlugin({ // Extract the common/public code, convenient to do cache
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                context: __dirname,
+                postcss: [
+                    autoprefixer({
+                        browsers: ["last 2 versions", "Firefox ESR", "> 1%", "ie >= 8", "iOS >= 8", "Android >= 4"]
+                    }),
+                    pxtorem({ rootValue: 100, propWhiteList: [] })
+                ]
+            }
+        }),
+        // Extract the common/public code, convenient to do cache
+        new webpack.optimize.CommonsChunkPlugin({
             names: ["vendor", "manifest"],
             filename: "[name].[chunkhash:8].js"
         }),
@@ -92,12 +99,19 @@ clientConfig = {
             filename: "../views/index.html",
             template: "./views/tpl/index.tpl.html",
             favicon: "./client/public/img/favicon.ico",
-            chunksSortMode: "none"
+            chunks: ["manifest", "vendor", "bundle"]
+            // chunksSortMode: (chunk1, chunk2) => {
+            //     const order = ["manifest", "vendor", "bundle"]
+            //     console.log(chunk1, chunk2)
+            //     let order1 = order.indexOf(chunk1.names[0])
+            //     let order2 = order.indexOf(chunk2.names[0])
+            //     return order1 - order2
+            // }
         }),
-        new ExtractTextPlugin("[name].[contenthash:8].css", {allChunks: true}),
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: true }),
         new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new CopyFilePlugin([
-            {from: path.resolve(__dirname, "../client/public"), to: "../public"}
+            { from: path.resolve(__dirname, "../client/public"), to: "../public" }
         ])
     ]
 }
@@ -107,15 +121,15 @@ function getExternals() {
     return fs.readdirSync(path.resolve(__dirname, "../node_modules"))
         .filter(filename => !filename.includes(".bin"))
         .reduce((externals, filename) => {
-            externals[filename] = `commonjs ${filename}`
-
-            return externals
+            const externalsResult = externals
+            externalsResult[filename] = `commonjs ${filename}`
+            return externalsResult
         }, {})
 }
 
-serverConfig = {
+const serverConfig = {
     context: path.resolve(__dirname, ".."),
-    entry: {server: "./server/server.prod"},
+    entry: { server: "./server/server.prod" },
     output: {
         path: path.resolve(__dirname, "../dist/server"),
         filename: "[name].js",
@@ -127,47 +141,59 @@ serverConfig = {
         __dirname: true
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /\.jsx?$/,
             exclude: /node_modules/,
-            loader: "babel"
+            use: [{
+                loader: "babel-loader",
+                options: {
+                    presets: [["react"], ["es2015", { modules: false }], ["stage-0"]]
+                }
+            }]
         }, {
             test: /\.less$/,
-            loaders: [
-                "css/locals?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
-                "less"
+            use: [
+                "css-loader/locals?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                "less-loader"
             ]
         }, {
             test: /\.(jpg|png|gif|webp)$/,
-            loader: "url?limit=8000"
-        }, {
-            test: /\.json$/,
-            loader: "json"
+            use: "url-loader?limit=8000"
         }]
     },
     resolve: {
-        extensions: ["", ".web.js", ".js", ".jsx", ".json"],
-        modulesDirectories: ["node_modules", path.join(__dirname, "../node_modules")]
+        extensions: [".web.js", ".js", ".jsx", ".json"],
+        modules: [path.join(__dirname, "../node_modules"), "node_modules"]
     },
     externals: getExternals(),
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
-            compress: {warnings: false},
+            compress: { warnings: false },
             comments: false
         }),
-        new webpack.DefinePlugin({"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)})
+        new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
     ]
 }
 
 // build service worker for PWA
-swConfig = {
+const swConfig = {
     context: path.resolve(__dirname, ".."),
-    entry: {sw: "./client/service-worker"},
+    entry: { sw: "./client/service-worker" },
     output: {
         path: path.resolve(__dirname, "../dist/client"),
         filename: "[name].js"
+    },
+    module: {
+        rules: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            use: [{
+                loader: "babel-loader",
+                options: {
+                    presets: [["react"], ["es2015", { modules: false }], ["stage-0"]]
+                }
+            }]
+        }]
     },
     target: "node",
     node: {
@@ -175,15 +201,13 @@ swConfig = {
         __dirname: true
     },
     plugins: [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
-            compress: {warnings: false},
+            compress: { warnings: false },
             comments: false
         }),
-        new webpack.DefinePlugin({"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV)}),
+        new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) }),
         new CopyFilePlugin([
-            {from: path.resolve(__dirname, "../node_modules/sw-toolbox/sw-toolbox.js"), to: "./sw-toolbox.js"}
+            { from: path.resolve(__dirname, "../node_modules/sw-toolbox/sw-toolbox.js"), to: "./sw-toolbox.js" }
         ])
     ]
 }

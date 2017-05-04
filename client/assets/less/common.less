@@ -1,4 +1,4 @@
-//  全局样式
+//  global tag style
     html{
         font-family: sans-serif;
     }
@@ -82,8 +82,16 @@
     a:visited{
         color:#242424;
     }
+    input {
+        border: none;
+    }
 
-// 颜色
+// display none
+    :global(.dis-none) {
+        display: none;
+    }
+
+// colors
     :global(.txt-blue){
         color: @blue;
     }
@@ -113,7 +121,7 @@
         background-color: #0092F2;
     }
 
-// 文本
+// text
     @font-face {font-family: "iconfont";
         src: url('../fonts/iconfont.eot'); /* IE9*/
         src: url('../fonts/iconfont.eot#iefix') format('embedded-opentype'), /* IE6-IE8 */
@@ -130,15 +138,15 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
-    .txt-help{
+    :global(.txt-help){
         font-size: 24px
     }
 
-    .txt-center{
+    :global(.txt-center){
         text-align: center
     }
 
-// 间距
+// seperation distance
     :global(.main){
         margin: 0 48px;
     }
@@ -167,78 +175,123 @@
         margin-top: 24px;
     }
 
-    .margin-bottom-lg{
+    :global(.margin-bottom-lg){
         margin-bottom: 112px;
     }
 
-    .margin-bottom-l{
+    :global(.margin-bottom-l){
         margin-bottom: 96px;
     }
 
-    .margin-bottom-m{
+    :global(.margin-bottom-m){
         margin-bottom: 64px;
     }
 
-    .margin-bottom-s{
+    :global(.margin-bottom-s){
         margin-bottom: 48px;
     }
 
-    .margin-bottom-xs{
+    :global(.margin-bottom-xs){
         margin-bottom: 24px;
     }
 
-    .margin-left-m{
+    :global(.margin-left-m){
         margin-left: 32px;
     }
 
-    .margin-left-s{
+    :global(.margin-left-s){
         margin-left: 24px;
     }
 
-    .margin-left-xs{
+    :global(.margin-left-xs){
         margin-left: 8px;
     }
 
-    .margin-right-m{
-        margin-left: 32px;
+    :global(.margin-right-m){
+        margin-right: 32px;
     }
 
-    .margin-right-s{
-        margin-left: 24px;
+    :global(.margin-right-s){
+        margin-right: 24px;
     }
 
-    .margin-right-xs{
-        margin-left: 8px;
+    :global(.margin-right-xs){
+        margin-right: 8px;
     }
 
-    .padding-bottom-lg{
+    :global(.padding-bottom-lg){
         padding-bottom: 112px;
     }
 
-    .padding-bottom-l{
+    :global(.padding-bottom-l){
         padding-bottom: 96px;
     }
 
-    .padding-bottom-m{
+    :global(.padding-bottom-m){
         padding-bottom: 64px;
     }
 
-    .padding-bottom-s{
+    :global(.padding-bottom-s){
         padding-bottom: 48px;
     }
 
-    .pading-bottom-xs{
+    :global(.padding-bottom-xs){
         padding-bottom: 24px;
     }
 
-    .has-header{
+    :global(.padding-top-lg){
+        padding-top: 112px;
+    }
+
+    :global(.padding-top-l){
+        padding-top: 96px;
+    }
+
+    :global(.padding-top-m){
+        padding-top: 64px;
+    }
+
+    :global(.padding-top-s){
+        padding-top: 48px;
+    }
+
+    :global(.padding-top-xs){
+        padding-top: 24px;
+    }
+
+    :global(.padding-left-m){
+        padding-left: 32px;
+    }
+
+    :global(.padding-left-s){
+        padding-left: 24px;
+    }
+
+    :global(.padding-left-xs){
+        padding-left: 8px;
+    }
+
+    :global(.padding-right-m){
+        padding-right: 32px;
+    }
+
+    :global(.padding-right-s){
+        padding-right: 24px;
+    }
+
+    :global(.padding-right-xs){
+        padding-right: 8px;
+    }
+
+    :global(.has-header){
         margin-top: 88px;
     }
 
-    .has-footer{
+    :global(.has-footer){
         margin-bottom: 88px;
     }
-// 显隐
+
+// display or cover
     :global(.hide){
         display: none;
     }
@@ -247,39 +300,39 @@
         display: block;
     }
 
-    .transport{
+    :global(.transport){
         opacity: 0;
     }
 
-    .no-transport{
+    :global(.no-transport){
         opacity: 1;
     }
 
-// 布局
-    .flex{
+// layout
+    :global(.flex){
         display: flex;
     }
 
-    .flex-1{
+    :global(.flex-1){
         flex: 1
     }
 
-    .text-center{
+    :global(.text-center){
         text-align: center;
     }
 
-    .has-header{
+    :global(.has-header){
         margin-top: 88px;
     }
 
-    .has-subheader{
+    :global(.has-subheader){
         margin-top: 168px;
     }
 
-    .has-footer{
+    :global(.has-footer){
         margin-bottom: 98px;
     }
 
-    .justify-content{
+    :global(.justify-content){
         justify-content: space-between;
     }

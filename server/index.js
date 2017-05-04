@@ -9,9 +9,9 @@ require("./lib/ignore")([".less"])
 
 let server
 
-if(process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
     server = require("./server.prod")
-}else {
+} else {
     server = require("./server.dev")
 }
 

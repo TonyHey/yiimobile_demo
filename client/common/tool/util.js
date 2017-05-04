@@ -24,7 +24,8 @@ export function debounce(fn, wait, immediate) {
             if (!immediate) {
                 result = fn.apply(context, args)
                 if (!timeout) {
-                    context = args = null
+                    context = null
+                    args = null
                 }
             }
         }
@@ -32,7 +33,6 @@ export function debounce(fn, wait, immediate) {
 
     return function debounced() {
         context = this
-        args = arguments
         timestamp = +(new Date())
 
         const callNow = immediate && !timeout
@@ -42,7 +42,8 @@ export function debounce(fn, wait, immediate) {
 
         if (callNow) {
             result = fn.apply(context, args)
-            context = args = null
+            context = null
+            args = null
         }
 
         return result
@@ -59,21 +60,23 @@ export function debounce(fn, wait, immediate) {
  * @returns {function}  传入的函数
  */
 export function throttle(fn, wait, scope) {
-    wait || (wait = 250)
-    let last,
-        deferTimer
-    return function() {
-        let context = scope || this
+    const waitTime = wait || 250
+    let last
+    let args
+    let deferTimer
 
-        let now = +new Date,
-            args = arguments
+    return function() {
+        const context = scope || this
+
+        const now = +new Date()
+
         if (last && now < last + wait) {
             // hold on to it
             clearTimeout(deferTimer)
-            deferTimer = setTimeout(function() {
+            deferTimer = setTimeout(() => {
                 last = now
                 fn.apply(context, args)
-            }, wait)
+            }, waitTime)
         } else {
             last = now
             fn.apply(context, args)

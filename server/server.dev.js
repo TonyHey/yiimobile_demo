@@ -1,5 +1,3 @@
-"use strict"
-
 import fs from "fs"
 import path from "path"
 import Koa from "koa"
@@ -12,27 +10,29 @@ import devMiddleware from "koa-webpack-dev-middleware"
 import hotMiddleware from "koa-webpack-hot-middleware"
 
 import config from "./config"
-import webpack_config from "../webpack/webpack.dev.config"
+import webpackConfig from "../webpack/webpack.dev.config"
 import routers from "./routers"
 import clientRoute from "./middlewares/clientRoute"
 
-const compiler = webpack(webpack_config)
+const compiler = webpack(webpackConfig)
 
 const app = new Koa()
 
 // Logger
 app.use(logger())
 
-// Webpack hook event to write html file into `dist/client/views/` from `/views/tpl` due to server render
+// Webpack hook event to write html file into `dist/client/views/`
+// from `/views/tpl` due to server render
 compiler.plugin("emit", (compilation, callback) => {
     const assets = compilation.assets
-    let file, data
+    let file
+    let data
 
     // create folder for output index.html if folder dist/client/views not exist
-    if(!fs.existsSync("dist")) {
-        fs.mkdirSync("dist", 777)
-        fs.mkdirSync("dist/client", 777)
-        fs.mkdirSync("dist/client/views", 777)
+    if (!fs.existsSync("dist")) {
+        fs.mkdirSync("dist", 0o755)
+        fs.mkdirSync("dist/client", 0o755)
+        fs.mkdirSync("dist/client/views", 0o755)
     }
 
     Object.keys(assets).forEach(key => {
@@ -48,7 +48,7 @@ compiler.plugin("emit", (compilation, callback) => {
 console.log(__dirname)
 // Serve static files
 app.use(server(path.resolve(__dirname, "..", "dist/client")))
-app.use(views(path.resolve(__dirname, "../dist/client/views"), {map: {html: "ejs"}}))
+app.use(views(path.resolve(__dirname, "../dist/client/views"), { map: { html: "ejs" } }))
 
 // Routes
 app.use(clientRoute)
@@ -59,13 +59,13 @@ console.log(`\n ==> Listening on port ${config.port}. Open up http://localhost:$
 // webpack dev
 app.use(convert(devMiddleware(compiler, {
     noInfo: true,
-    publicPath: webpack_config.output.publicPath
+    publicPath: webpackConfig.output.publicPath
 })))
 app.use(convert(hotMiddleware(compiler)))
 
 app.listen(config.port)
 
-app.on("error", function(err) {
+app.on("error", err => {
     console.log("server error", err)
 })
 

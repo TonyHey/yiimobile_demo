@@ -4,14 +4,15 @@
 
 const fs = require("fs")
 const path = require("path")
-let root_dir = ""
+
+let rootDir = ""
 
 function CodeCheckPlugin(root) {
-    root_dir = root
+    rootDir = root
 }
 
 function shellCode() {
-    let arr = [
+    const arr = [
         "#!/bin/bash",
         "",
         "echo -e '\\033[33m eslint check js code standard... \\033[0m'",
@@ -30,18 +31,18 @@ function shellCode() {
 }
 
 CodeCheckPlugin.prototype.apply = function(compiler) {
-    compiler.plugin("compile", function(params) {
-        let hooks_path = path.join(root_dir, ".git/hooks")
-        let file_path = path.join(hooks_path, "pre-commit")
+    compiler.plugin("compile", () => {
+        const hooksPath = path.join(rootDir, ".git/hooks")
+        const filePath = path.join(hooksPath, "pre-commit")
 
-        if(!fs.existsSync(hooks_path)) {
-            fs.mkdirSync(hooks_path)
+        if (!fs.existsSync(hooksPath)) {
+            fs.mkdirSync(hooksPath)
         }
 
-        if(!fs.existsSync(file_path)) {
+        if (!fs.existsSync(filePath)) {
             console.log("create git pre-commit hook")
-            fs.writeFileSync(file_path, shellCode())
-            fs.chmodSync(file_path, parseInt("0755", 8))
+            fs.writeFileSync(filePath, shellCode())
+            fs.chmodSync(filePath, 0o777)
         }
     })
 }

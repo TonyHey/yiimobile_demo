@@ -1,9 +1,7 @@
 import { ADD_TODO, LOADING, ADD_PUBLIC_DETAIL } from "../constants"
 import API from "../../common/api"
 
-const addTodo = text => {
-    return { type: ADD_TODO, text }
-}
+const addTodo = text => ({ type: ADD_TODO, text })
 
 const requestPost = loading => ({
     type: LOADING,
@@ -11,16 +9,17 @@ const requestPost = loading => ({
 })
 
 const addPublicDetail = text => {
-    return {
+    const addPublicDetailAction = {
         type: ADD_PUBLIC_DETAIL,
         text
     }
+    return addPublicDetailAction
 }
 
 const getFetch = () => dispatch => {
     dispatch(requestPost(true))
     API.home_banner().then(json => {
-        if(json.code === 1) {
+        if (json.code === 1) {
             dispatch(requestPost(false))
         }
     })
