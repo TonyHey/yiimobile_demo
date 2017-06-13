@@ -1,63 +1,74 @@
-@import url("../../../assets/less/constant.less");
-
-.search {
-    position: relative;
-    background-color: #0A7BB6;
-    padding: 48px 32px;
-    display: flex;
-    align-items: center;
-    .searchInput {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        width: 68vw;
+:global {
+    .search_section_module {
+  	background: #0599eb;
+  	padding: 58px 0;
+  	.container {
+  		padding: 0 60px 0 80px;
+  	}
+  }
+  .search_section_module_button {
+  	color: #015c8f;
+  	font-family: 'latobold';
+  	font-size: 24px;
+  	outline: none;
+  	cursor: pointer;
+  	border: 0;
+  	background: none;
+  	margin: 0 0 0 30px;
+  	padding: 0;
+  }
+  .search_list {
+  	margin-top: 66px;
+  	h2 {
+  		font-family: 'latobold';
+  		font-size: 24px;
+  		text-transform: uppercase;
+  		color: #fff;
+  		margin-bottom: 30px;
+  	}
+  }
+  .search_tags {
+  	a {
+  		font-family: 'latoregular';
+  		background: #0087d2;
+  		padding: 28px 40px;
+  		display: inline-block;
+  		color: #ffffff;
+  		font-size: 26px;
+  		margin: 0 20px 24px 0;
+  		border-radius: 8px;
+  		-moz-border-radius: 8px;
+  		-webkit-border-radius: 8px;
+  		&:hover {
+  			background: #007dc2;
+  		}
+  	}
+  }
+  .search_section_module_form {
+  	position: relative;
+  	a {
+  		position: absolute;
+  		right: 23%;
+  		top: 0.34rem;
+  		width: 52px;
+  		height: 52px;
+  		background: #e5e5e5;
+  		text-align: center;
+  		border-radius: 100%;
+  		-moz-border-radius: 100%;
+  		-webkit-border-radius: 100%;
+  		line-height: 0.42rem;
+  	}
+    .suggestionItem{
+        color: #192128;
+        font-size: 0.24rem;
+        margin: 0 0 0 -40px;
+        padding: 0;
+        display: block;
+        span {
+            color: #abbcc6;
+            font-size: 0.22rem;
+        }
     }
-    .textBox {
-        width: 100%;
-        margin-right: 20px;
-        font-size: 36px;
-        border-radius: 10px;
-        text-indent: 100px;
-        line-height: 88px;
-    }
-    .searchIcon {
-        position: absolute;
-        font-size: 60px;
-        margin-left: 28px;
-        color: @gray-deep;
-    }
-    .cleanIcon {
-        position: absolute;
-        right: 0;
-        font-size: 60px;
-        color: @gray;
-        margin-right: 28px;
-    }
-    .cancelBtn {
-        background-color: rgba(255,255,255,0);
-        font-size: 32px;
-        color: #FFFFFF;
-        line-height: 88px;
-    }
-}
-.recentSearch {
-    margin: 48px;
-    .title {
-        color: @gray;
-        font-size: 48px;
-        margin-bottom: 28px;
-    }
-    .item {
-        display: inline-block;
-        color: @orange;
-        padding: 16px;
-        margin-right: 28px;
-        border: 1px solid @orange;
-        border-radius: 10px;
-
-    }
-}
-.spliter {
-    background-color: @gray-light;
-    min-height: 88px;
+  }
 }

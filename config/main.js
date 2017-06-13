@@ -28,5 +28,10 @@ export default {
     cdn: {
         url: null,
     },
+    algolia: {
+        "x-algolia-application-id": "UYMHCWJNK3",
+        "x-algolia-api-key": "be24ff4db4bd4d67c2b86c68b598a2b5",
+        "x-algolia-agent": "React mobile-app"
+    },
     host: "https://m.tours4fun.com"
 }

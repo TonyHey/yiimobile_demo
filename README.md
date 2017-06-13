@@ -108,8 +108,56 @@ npm run dev   			# enables nodemon for the server, will serves app at localhost:
 				# you can change the port in /server/config.js
 ```
 
+## Deploying
+
+1. `yarn` 
+    Run inside root directory to download dependencies
+2. `npm run build` 
+    This will build the production ready bundles
+3. `num run start`
+    Starts the node server
+
 ## Style guide
 
 Please follow the style guide for the mobile site.  
 
 ![ui-guide](https://cloud.githubusercontent.com/assets/6957203/26339740/bc430eae-3fa7-11e7-90b6-fd8bb0822ed7.jpg)
+
+
+### I18n-react
+
+React (JS) text internationalization and externalizing.
+
+#### Quick example
+en.json
+``` 
+{
+  "greeting": "###Hello, World!\n My name is *{myName}*! \n {{howAreYou}}",
+  "howAreYou": "_How do you do?_"
+}
+```
+Index.js
+```
+import React from "react"
+import T from "i18n-react"
+
+
+T.setTexts(require("./en.json"))
+
+class Test extends React.Component {
+    render() {
+        return (
+            <T.span text={{ key: "greeting", myName: "Palak" }} />
+        )
+    }
+  }
+
+export default Test
+```
+
+#### Points of interest:
+
+* {who} - variable interpolation
+* formal/informal - context selectors
+* longTime - pluralization and range
+* [X days][...] - renders two paragraphs

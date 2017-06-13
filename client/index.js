@@ -7,7 +7,6 @@ import configureStore from "./redux/store"
 import Route from "./route"
 
 import "./assets/less/style.less"
-import "./public/style/normalize.min.css"
 
 const store = configureStore()
 

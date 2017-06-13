@@ -112,8 +112,6 @@ function addToQueue(url) {
 export const get = (endpoint, params = {}, cache = false, loadingIndicator = true) => {
     const url = getUrl(endpoint, params)
 
-    console.log("url: ", url)
-
     const headers = {
         method: "GET",
         headers: reqHeader

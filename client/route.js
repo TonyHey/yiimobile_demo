@@ -4,7 +4,9 @@ import { Route, Switch } from "react-router-dom"
 import Home from "./containers/home"
 import Login from "./containers/login"
 import Signup from "./containers/signup"
-import Search from "./containers/tours"
+import Tours from "./containers/tours"
+import Search from "./common/components/search"
+import Filter from "./containers/tours/components/filter"
 import List from "./containers/product-list"
 import Product from "./containers/product"
 import NotFound from "./common/components/not-found"
@@ -32,8 +34,14 @@ const configs = [{
     path: "/signup",
     component: Signup
 }, {
+    path: "/tours/:searchKeyword/:entityType*",
+    component: Tours
+}, {
     path: "/search/:searchKeyword*",
     component: Search
+}, {
+    path: "/filter",
+    component: Filter
 }, {
     path: "/list",
     component: List

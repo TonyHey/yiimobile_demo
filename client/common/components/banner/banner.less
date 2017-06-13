@@ -6,20 +6,15 @@
 }
 
 .banner-container {
-    background: url("/public/img/lazy.png") 100%/cover no-repeat;
+    background: url("/public/img/lazy.png") no-repeat center;
+    background-size: cover;
+    min-height: 720px;
     position: relative;
-}
-.banner-slider {
-    min-height: 40vw;
-}
-.loading {
-    min-height: 40vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    img {
+        width: 100%;
+    }
 }
 
 p {
     color: #070707;
 }
-

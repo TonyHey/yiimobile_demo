@@ -1,39 +1,94 @@
 @import url("../../../assets/less/constant.less");
 
 .recently-viewed {
-    width: 120%;
-    padding: 60px 30px 30px;
-    p {
-        margin-bottom: 20px;
+    background: url("../../../public/img/recently_view_bg.jpg") repeat center top;
+    padding: 48px 0;
+
+    .title {
+        font-family: 'latolight';
+        color: #fff;
+        font-size: 60px;
+        margin: 0 0 34px;
     }
-    .items {
-        
-    }
+
+    .items {}
+
     .item-wraper {
         display: inline-block;
         background-color: #FFFFFF;
-        width: 46vw;
-        margin-right: 2vw;
+        max-width: 420px;
         border-radius: 10px;
         box-shadow: 0 0 20px @gray;
+
         .item-img {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .des-wraper {
             position: relative;
             padding: 20px;
         }
+
+        .price-belt {
+            position: relative;
+        }
+
         .item-des {
-            color: @gray;
-            padding: 20px;
+            margin: 0;
+            font-family: 'latoregular';
+            line-height: 42px;
+            position: relative;
+            padding-bottom: 28px;
+            font-size: 36px;
+            font-weight: 500;
+            margin-bottom: 27px;
+
+            &:after {
+                background: #abbcc6;
+                width: 60px;
+                height: 2px;
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                content: "/";
+                text-indent: -9999px;
+            }
         }
+
+        .display-price {
+            color: #3aaceb;
+            font-size: 64px;
+            font-family: 'oswaldbold';
+            margin-right: 8px;
+        }
+
         .item-price {
-            color: @orange;
-            padding: 10px 20px 20px;
+            color: #abbcc6;
+            font-size: 36px;
+            font-family: 'oswaldregular';
+            letter-spacing: 1px;
         }
-    }
-    span {
-        position: absolute;
-        top: 40px;
-        right: 50px;
-        width: 32px;
-        height: 32px;
+
+        .price-star {
+            position: absolute;
+            right: -30px;
+            bottom: 0;
+            background: #ffcc02;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-family: 'oswaldbold';
+            font-size: 48px;
+
+            img {
+                width: 48px;
+                margin-right: 8px;
+            }
+
+            span {
+                vertical-align: middle;
+            }
+        }
     }
 }

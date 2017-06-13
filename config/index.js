@@ -1,14 +1,15 @@
 import main from "./main"
 import local from "./local"
+import template from "./template"
 
-let config
+let envConfig
 
-// merge configs
+// select environment config
 if (process.env.NODE_ENV === "production") {
-    config = main
+    envConfig = template
 } else {
-    config = local
+    envConfig = local
 }
 
-const configs = config
+const configs = Object.assign(main, envConfig)
 export default configs

@@ -1,51 +1,33 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 
 import styles from "./recently-viewed.less"
 
-const ItemSpan = props => {
-    const hotDisplay = props.hot ? "iconfont" : "dis-none iconfont"
-
-    return (
-        <span className={hotDisplay}>&#xe64d;</span>
-    )
-}
-
-ItemSpan.propTypes = {
-    hot: PropTypes.bool.isRequired
-}
-
-
 class RecentlyViewed extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            items: [{
-                imgUrl: "/public/img/lazy.png",
-                itemHot: true,
-                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
-                itemPrice: "$100"
-            }, {
-                imgUrl: "/public/img/lazy.png",
-                itemHot: false,
-                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
-                itemPrice: "$100"
-            }]
-        }
+    componentDidMount() {
+        Swiper(".recent-swiper-container", {
+            slidesPerView: "auto",
+            spaceBetween: 30
+        })
     }
 
-    getItems() {
-        const itemList = this.state.items
-        if (itemList.length) {
-            return itemList.map((item, index) => (
-                <div className={styles.itemWraper} key={`item_${index}`}>
-                    <div className={styles.itemImg}>
-                        <img src={item.imgUrl} alt="item img" />
-                        <ItemSpan hot={item.itemHot} />
+    getItems = recentViewed => {
+        if (recentViewed.length) {
+            return recentViewed.map((item, index) => (
+                <div className={styles.itemWraper + " swiper-slide"} key={`item_${index}`}>
+                    <div>
+                        <img className={styles.itemImg} src={item.imgUrl} alt="item img" />
                     </div>
-                    <p className={styles.itemDes}>{item.itemDes}</p>
-                    <p className={styles.itemPrice}>{item.itemPrice}</p>
+                    <div className={styles.desWraper}>
+                        <h3 className={styles.itemDes}>{item.itemDes}</h3>
+                        <div className={styles.priceBelt}>
+                            <span className={styles.displayPrice}>{item.displayPrice}</span>
+                            <span className={styles.itemPrice}>{item.itemPrice}</span>
+                            <div className={styles.priceStar}>
+                                <img src="public/img/recently_view_star.png" alt="" title="" />
+                                <span>5</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             ))
         }
@@ -55,14 +37,48 @@ class RecentlyViewed extends Component {
     }
 
     render() {
-        return (
-            <div className={styles.recentlyViewed}>
-                <p>Recently Viewed</p>
-                <div className={styles.items}>
-                    {this.getItems()}
+        let recentViewed = false
+        if (typeof (LocalStorage) !== "undefined") {
+            recentViewed = localStorage.getItem("RecentViewedProduct")
+        }
+        recentViewed = recentViewed || [
+            {
+                imgUrl: "/public/img/recent_view_img1.jpg",
+                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
+                displayPrice: "$175",
+                itemPrice: "$190"
+            }, {
+                imgUrl: "/public/img/recent_view_img1.jpg",
+                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
+                displayPrice: "$120",
+                itemPrice: "$180"
+            }, {
+                imgUrl: "/public/img/recent_view_img1.jpg",
+                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
+                displayPrice: "$100",
+                itemPrice: "$120"
+            }, {
+                imgUrl: "/public/img/recent_view_img1.jpg",
+                itemDes: "Lorem inpsum dolor slt amet conserctetur adipiscing",
+                displayPrice: "$100",
+                itemPrice: "$120"
+            }
+        ] // for developmemt temporary
+        if (recentViewed) {
+            return (
+                <div className={styles.recentlyViewed}>
+                    <div className="container">
+                        <h2 className={styles.title}>Recently Viewed</h2>
+                        <div className="row recent-swiper-container">
+                            <div className="swiper-wrapper">
+                                {this.getItems(recentViewed)}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        return (<div className="disNone">{""}</div>)
     }
 }
 

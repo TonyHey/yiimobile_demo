@@ -5,9 +5,10 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const pxtorem = require("postcss-pxtorem")
 const autoprefixer = require("autoprefixer")
+const pxtorem = require("postcss-pxtorem")
 const CodeCheckPlugin = require("./CodeCheckPlugin")
+const TouchFilesPlugin = require("./TouchFilesPlugin")
 
 // process.traceDeprecation = true
 
@@ -41,7 +42,8 @@ const clientConfig = {
                         presets: [["react"], ["es2015", { modules: false }], ["stage-0"]]
                     }
                 }]
-            }, {
+            },
+            {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
@@ -51,7 +53,8 @@ const clientConfig = {
                         "less-loader"
                     ]
                 })
-            }, {
+            },
+            {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
@@ -60,10 +63,12 @@ const clientConfig = {
                         "postcss-loader"
                     ]
                 })
-            }, {
+            },
+            {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 use: "url-loader?limit=8000&name=[name].[hash:base64:8].[ext]"
-            }, {
+            },
+            {
                 test: /\.html$/,
                 use: "html-loader?minimize=false"
             }
@@ -93,8 +98,6 @@ const clientConfig = {
             names: ["vendor", "manifest"],
             filename: "[name].[chunkhash:8].js"
         }),
-        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: false }),
-        new OptimizeCssAssetsPlugin(),
         new webpack.optimize.UglifyJsPlugin({ // compress js
             compress: {
                 warnings: false
@@ -121,6 +124,8 @@ const clientConfig = {
             //     return order1 - order2
             // }
         }),
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: true }),
+        new OptimizeCssAssetsPlugin(),
         new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new CopyFilePlugin([
             { from: path.resolve(__dirname, "../client/public"), to: "../public" }
@@ -192,6 +197,12 @@ const serverConfig = {
     },
     externals: getExternals(),
     plugins: [
+        new TouchFilesPlugin([
+            {
+                path: path.resolve(__dirname, "../config/local.js"),
+                content: "export default {}",
+            }
+        ]),
         new webpack.LoaderOptionsPlugin({
             options: {
                 context: __dirname,
@@ -203,13 +214,13 @@ const serverConfig = {
                 ]
             }
         }),
-        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: false }),
-        new OptimizeCssAssetsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false },
             comments: false
         }),
-        new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
+        new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) }),
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: true }),
+        new OptimizeCssAssetsPlugin()
     ]
 }
 

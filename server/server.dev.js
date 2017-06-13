@@ -6,20 +6,17 @@ import server from "koa-static"
 import convert from "koa-convert"
 import views from "koa-views"
 import webpack from "webpack"
-import Router from "koa-router"
 import devMiddleware from "koa-webpack-dev-middleware"
 import hotMiddleware from "koa-webpack-hot-middleware"
 
-
 import config from "./config"
 import webpackConfig from "../webpack/webpack.dev.config"
-// import routers from "./routers"
+import routers from "./routers"
 import clientRoute from "./middlewares/clientRoute"
 
 const compiler = webpack(webpackConfig)
 
 const app = new Koa()
-const router = new Router()
 
 // Logger
 app.use(logger())
@@ -37,9 +34,8 @@ compiler.plugin("emit", (compilation, callback) => {
         fs.mkdirSync("dist/client", 0o755)
         fs.mkdirSync("dist/client/views", 0o755)
     }
-
     Object.keys(assets).forEach(key => {
-        if (key.match(/\.html$/)) {
+        if (key.match(/\.html$/) && !key.match(/^public\/HTML/)) {
             file = path.resolve(__dirname, key)
             data = assets[key].source()
             fs.writeFileSync(file, data)
@@ -55,7 +51,7 @@ app.use(views(path.resolve(__dirname, "../dist/client/views"), { map: { html: "e
 
 // Routes
 app.use(clientRoute)
-app.use(router.routes(), router.allowedMethods())
+routers(app)
 
 console.log(`\n ==> Listening on port ${config.port}. Open up http://localhost:${config.port}/ in your browser.\n`)
 

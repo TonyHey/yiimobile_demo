@@ -14,7 +14,7 @@ function fetchProductError() {
     }
 }
 
-function apiProductFormatting(data) {
+export function apiProductFormatting(data) {
     return {
         productId: data.I,
         name: data.N,

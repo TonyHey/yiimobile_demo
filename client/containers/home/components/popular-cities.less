@@ -1,78 +1,64 @@
 @import url("../../../assets/less/constant.less");
 
-.popular-cities {
-    padding: 30px 30px 30px;
-    p {
-        margin-bottom: 20px;
+.popularCities {
+    background: url("../../../public/img/product_type_bg.jpg") repeat left top;
+    padding: 36px 0 64px;
+
+    .title {
+        font-size: 60px;
+        color: #5f7d8d;
+        font-family: 'latolight';
+        margin-bottom: 24px;
     }
-    span {
-        float: right;
-    }
-    .inner-Text {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width:100%;
+
+    .destBox {
         text-align: center;
-    }
-    .slide-item {
-        padding-right: 20px;
-    }
-    .content {
         position: relative;
-        display: inline-block;
-        background-color: #FFFFFF;
         width: 100%;
-        border-radius: 10px;
+        padding-bottom: 20px;
         img {
-            border: 1px solid rgba(255, 255, 255, 0);
+            background: url("/public/img/lazy.png") no-repeat center;
+            background-size: cover;
+            min-height: 340px;
             border-radius: 10px;
+            width: 100%;
         }
-        .country {
-            color: #FFFFFF;
-            font-size: 48px;
-            font-weight: 600;
-        }
-        .nomads {
-            color: #FFFFFF;
-            width: 20%;
-            min-width: 210px;
-            margin: 0 auto;
-            padding: 5px 0;
-            background: linear-gradient(to right, @orange-deep, @orange-light);
-            border-radius: 10px;
+
+        h3 {
+            position: absolute;
+            font-family: 'oswaldbold';
+            font-size: 38px;
+            color: #fff;
+            padding: 0 30px;
+            width: 100%;
+            z-index: 9;
+            bottom: 40px;
+            line-height: 54px;
+            margin: 0;
         }
     }
-    .to-do {
+
+    .nearby {
         text-align: center;
-        background-color: @orange-light;
-        color: #ffffff;
-        margin: 40px 0;
-        padding: 20px 0;
-        border-radius: 20px;
-        cursor: pointer;
-        i {
-            font-size: 44px;
-            margin-right: 10px;
-        }
+        margin-top: 20px;
     }
-    .sunny-dest {
-        position: relative;
-        margin: 40px 0;
+
+    .to-do {
+        font-family: 'latobold';
+        font-size: 36px;
+        display: inline-block;
+        text-align: center;
+        background: #3aaceb;
+        padding: 32px 64px;
+        color: #fff;
+        border-radius: 8px;
+        text-decoration: none;
         img {
-            border: 1px solid rgba(255, 255, 255, 0);
-            border-radius: 20px;
-            max-height: 200px;
+            max-width: 64px;
+            margin-right: 8px;
         }
-        .sunny-title {
-            color: #FFFFFF;
-        }
-        .sunny-des {
-            color: @gray-light;
-        }
-        span {
-            float: none;
-            color: @green-deep;
+        &:hover {
+            background: #2e98d3;
         }
     }
 }

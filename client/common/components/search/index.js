@@ -1,87 +1,154 @@
 import React from "react"
+import { connect } from "react-redux"
 import PropTypes from "prop-types"
+import Autosuggest from "react-autosuggest"
+import { Link } from "react-router-dom"
+import _ from "lodash"
+import "./index.less"
+import theme from "./theme.less"
+import ToursAPI from "../../../redux/actions/ToursActions"
+import LocalstorageAct from "../../../redux/actions/LocalstorageAction"
+import SearchAct from "../../../redux/actions/SearchAction"
+import { urlPrettify } from "../../tool/filter"
 
-import styles from "./index.less"
+function renderSuggestion(item) {
+    return (
+        <div className="suggestionItem">
+            { item.name }
+            <span> { item.type }</span>
+        </div>
+    )
+}
 
 class Search extends React.Component {
-    static propTypes = {
-        recentSearch: PropTypes.oneOfType([PropTypes.array]).isRequired,
-        value: PropTypes.string.isRequired
-    }
-
-    static defaultProps = {
-        recentSearch: ["New York", "Las Vegas"],
-        value: ""
-    }
-
     constructor(props) {
         super(props)
-        this.state = { searchVal: this.props.value.replace("-", " ") }
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.debounced = _.debounce(value => this.props.getSuggestions(value), 700)
     }
-
     componentDidMount() {
         document.title = "Search"
+        this.props.getRecentSearch()
+        this.props.getPopular()
     }
 
-    handleChange = event => {
-        this.setState({ searchVal: event.target.value })
+    onChange = (event, { newValue }) => {
+        this.props.setSuggestionValue(newValue)
     }
 
-    handleClear = () => {
-        this.setState({ searchVal: "" })
+    onSuggestionsFetchRequested = ({ value }) => {
+        this.debounced(value)
     }
 
-    handleCancel = () => {
-        history.back()
+    onSuggestionsClearRequested = () => {
+        this.props.clearSuggestions()
     }
-
-    handleRecent = event => {
-        this.setState({ searchVal: event.target.innerText })
+    onSuggestionSelected = (event, { suggestion }) => {
+        this.props.setSuggestionValue(suggestion.name)
+        const searchType = suggestion.type === "" ? "" : "/" + urlPrettify(suggestion.type)
+        this.props.history.push(`/tours/${urlPrettify(suggestion.name) + searchType}`)
+        this.props.openSearch(false)
     }
+    getSuggestionValue = suggestion => suggestion.name
+    clearSearchValue = () => this.props.setSuggestionValue("")
 
-    render() {
-        const recentSearch = () => {
-            const recentList = this.props.recentSearch
-            if (recentList.length) {
-                return (
-                    <section className={styles.recentSearch}>
-                        <p className={styles.title}>Recent Searches</p>
-                        <div className={styles.items}>
-                            { recentList.map((item, key) => (
-                                <p key={`recent_${key}`} className={styles.item} onClick={this.handleRecent}>{item}</p>
-                            ))}
-                        </div>
-                    </section>
-                )
-            }
+    handleSubmit = e => {
+        e.preventDefault()
+        this.props.history.push(`/tours/${urlPrettify(e.target.autosuggest.value)}`)
+    }
+    renderRecentSearch = () => {
+        if (this.props.recentSearch.length) {
             return (
-                <section>{""}</section>
+                <div className="search_list">
+                    <h2>Recent Searches:</h2>
+                    <div className="search_tags">
+                        {
+                          this.props.recentSearch.map((item, key) => (
+                              <Link key={`recent_${key}`} to={`/tours/${urlPrettify(item)}`}>{item}</Link>
+                          ))
+                        }
+                    </div>
+                </div>
             )
         }
         return (
-            <div className={styles.main}>
-                <form onSubmit={this.handleSubmit} className={styles.search}>
-                    <div className={styles.searchInput}>
-                        <i className={styles.searchIcon + " iconfont"}>&#xe69c;</i>
-                        <input
-                            type="text"
-                            name="test"
-                            value={this.state.searchVal}
-                            className={styles.textBox}
-                            onChange={this.handleChange}
-                            onKeyUp={this.handleKeyDown}
-                        />
-                        <i className={styles.cleanIcon + " iconfont"} onClick={this.handleClear}>&#xe6da;</i>
+            <section />
+        )
+    }
+    renderPopulerSearchh = () => {
+        if (this.props.popularSearch.length) {
+            return (
+                <div className="search_list">
+                    <h2>Popular Searches:</h2>
+                    <div className="search_tags">
+                        {
+                          this.props.popularSearch.map((item, key) => (
+                              <Link key={`recent_${key}`} to={`/tours/${urlPrettify(item)}`}>{item}</Link>
+                          ))
+                        }
                     </div>
-                    <input type="button" className={styles.cancelBtn} value="Cancel" onClick={this.handleCancel} />
-                </form>
-                {recentSearch()}
-                <div className={styles.spliter}>{""}</div>
-                <div className="search-result">Search Results List</div>
+                </div>
+            )
+        }
+        return (
+            <section />
+        )
+    }
+
+    render() {
+        const inputProps = {
+            placeholder: "Search",
+            name: "autosuggest",
+            value: this.props.searchValue,
+            onChange: this.onChange
+        }
+        return (
+            <div>
+                <section className="search_section_module">
+                    <div className="container">
+                        <div className="search_section_module_form">
+                            <form onSubmit={this.handleSubmit}>
+                                <Autosuggest
+                                    theme={theme}
+                                    className="search_section_module_input"
+                                    suggestions={this.props.suggestions}
+                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                    getSuggestionValue={this.getSuggestionValue}
+                                    renderSuggestion={renderSuggestion}
+                                    inputProps={inputProps}
+                                    onSuggestionSelected={this.onSuggestionSelected}
+                                />
+                                <input type="button" onClick={() => this.props.openSearch(false)} value="Cancel" className="search_section_module_button" />
+                                <a onClick={this.clearSearchValue} ><img src="../../../public/img/search_module_close_icon.png" alt="" title="" /></a>
+                            </form>
+                        </div>
+                        { this.renderRecentSearch()}
+                        { this.renderPopulerSearchh()}
+                    </div>
+                </section>
             </div>
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+        ...state.SearchReducer
+    }
+}
+Search.propTypes = {
+    popularSearch: PropTypes.oneOfType([PropTypes.array]),
+    searchValue: PropTypes.string,
+    recentSearch: PropTypes.oneOfType([PropTypes.array]),
+    history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    suggestions: PropTypes.oneOfType([PropTypes.array])
+}
+Search.defaultProps = {
+    searchValue: "",
+    popularSearch: [],
+    recentSearch: [],
+    suggestions: []
+}
 
-
-export default Search
+export default connect(mapStateToProps,
+  { ...SearchAct, ...LocalstorageAct, ...ToursAPI })(Search)

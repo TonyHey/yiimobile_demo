@@ -1,79 +1,65 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { connect } from "react-redux"
 import PropTypes from "prop-types"
+
 import NavBar from "../../common/components/nav-bar"
 import Banner from "../../common/components/banner"
+import Landing from "./components/landing-container"
+import Categrory from "./components/category"
 import RecentlyViewed from "./components/recently-viewed"
 import PopularCities from "./components/popular-cities"
-import Footer from "./components/footer"
-import styles from "./index.less"
+import Experiences from "./components/experience"
+import FreeTours from "./components/free-tours"
+import Footer from "../../common/components/footer"
 import configs from "../../../config/index"
-import CityAPI from "../../redux/actions/CityActions"
+import { getBanners, getPopularDestinations } from "../../redux/actions/HomeActions"
+
+if (typeof (window) !== "undefined") {
+    require("../../common/lib/swiper.min")
+}
 
 class Home extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
-            bannerText: {
-                first: "THE WORLD'S",
-                second: "LOCAL",
-                third: "ADVENTURE",
-                fourth: "FOR LESS"
-            }
+            bannerText: "The World’s Local Adventure for Less",
+            searchKey: ""
         }
     }
-    componentDidMount() {
-        this.props.getPopularDestinations(185, 141)
-    }
-    onUserClick = e => {
-        location.pathname = "login"
-        console.log("user clicked: ", e)
-    }
-    onMenuClick = e => {
-        console.log("menu clicked: ", e)
+    componentWillMount() {
+        this.props.getPopularDestinations(320, 380)
+        this.props.getBanners(640, 680)
     }
 
     render() {
+        const { banners, history } = this.props
+
         return (
-            <div className={styles.main}>
+            <div>
                 <Helmet>
                     <title>Home</title>
                     <link rel="canonical" href={configs.desktop.url} />
                     <meta name="Description" content="Find affordable holiday vacation packages, sightseeing tours, things to do, city day trips in world-wide destinations. Book Today and Save!" />
                 </Helmet>
-                <NavBar className={styles.topNav}>
-                    <i className="iconfont" onClick={this.onUserClick} >&#xe69d;</i>
-                    <i className="iconfont" onClick={this.onMenuClick} >
-                        <img src="/public/img/menu.png" alt="menu" />
-                    </i>
-                </NavBar>
-
+                {/* header nav bar */}
+                <NavBar />
                 {/* banner */}
-                <Banner banners={[]}>
-                    <div className={styles.search}>
-                        <div className={styles.searchDes}>
-                            <p>{this.state.bannerText.first}</p>
-                            <p>{this.state.bannerText.second}</p>
-                            <p>{this.state.bannerText.third}</p>
-                            <p>{this.state.bannerText.fourth}</p>
-                        </div>
-                        <div className={styles.searchBox}>
-                            <Link className={styles.searchBtn} to="/search">
-                                <i className={styles.searchIcon + " iconfont"}>&#xe69c;</i>
-                                WHERE DO YOU WANT TO GO
-                            </Link>
-                        </div>
-                    </div>
+                <Banner banners={banners}>
+                    <Landing history={history} />
                 </Banner>
-
+                {/* category */}
+                <Categrory />
                 {/* recently viewed */}
                 <RecentlyViewed />
-
+                {/* popular cities */}
                 <PopularCities Cities={this.props.popularCities} />
-
+                {/* experience */}
+                <Experiences />
+                {/* free tours */}
+                <FreeTours />
+                {/* footer */}
                 <Footer />
             </div>
         )
@@ -82,7 +68,10 @@ class Home extends Component {
 
 Home.propTypes = {
     popularCities: PropTypes.oneOfType([PropTypes.array]).isRequired,
-    getPopularDestinations: PropTypes.func.isRequired
+    getPopularDestinations: PropTypes.func.isRequired,
+    getBanners: PropTypes.func.isRequired,
+    history: PropTypes.oneOfType([PropTypes.object]).isRequired,
+    banners: PropTypes.oneOfType([PropTypes.array]).isRequired,
 }
 Home.defaultProps = {
     popularCities: []
@@ -90,8 +79,10 @@ Home.defaultProps = {
 
 const mapStateToProps = state => ({
     popularCities: state.CityReducer.popularDestinations,
+    banners: state.BannersReducer.banners
 })
 
 export default connect(mapStateToProps, {
-    getPopularDestinations: CityAPI.getPopularDestinations
+    getPopularDestinations,
+    getBanners
 })(Home)

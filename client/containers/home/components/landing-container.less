@@ -1,0 +1,40 @@
+:global {
+    .landing-banner-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        z-index: 9;
+    }
+    .searchformdiv {
+        position: relative;
+        width: 80%;
+        max-width: 750px;
+        margin: 0 auto;
+        .inputtextcontrol {
+            width: 100%;
+            padding: 44px 37px;
+            border: 0;
+            border-radius: 10px;
+            color: #95abb7;
+            font-family: 'latoregular';
+            font-size: 28px;
+            outline: none;
+        }
+        .searchbtn {
+            background: url(../../../public/img/search_icon.png) no-repeat center center #ffcc02;
+            border: 0;
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border-radius: 0px 10px 10px 0;
+            cursor: pointer;
+            :hover {
+                background: url(../../../public/img/search_icon.png) no-repeat center center #ebbd05;
+            }
+        }
+    }
+}
