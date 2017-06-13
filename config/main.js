@@ -27,5 +27,6 @@ export default {
     },
     cdn: {
         url: null,
-    }
+    },
+    host: "https://m.tours4fun.com"
 }

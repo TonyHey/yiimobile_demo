@@ -1,0 +1,120 @@
+@import url("../../../assets/less/constant.less");
+
+.footer {
+    position: relative;
+    background-color: @bg-color;
+    .footer-content {
+        position: relative;
+        background-color: @gray-light;
+        border-top: 1px solid @gray;
+        border-bottom: 1px solid @gray;
+    }
+    .footer-title {
+        color: @black;
+    }
+    .footer-intro {
+        color: @gray-deep;
+        padding-right: 120px;
+    }
+    .footer-circle {
+        width: 128px;
+        height: 128px;
+        border: 1px solid @gray-deep;
+        border-radius: 50%;
+        position: absolute;
+        top: 22%;
+        right: 10%;
+        z-index: 0;
+    }
+    .footer-how {
+        font-size: 48px;
+        color: #FFFFFF;
+    }
+    .footer-share {
+        position: relative;
+        p {
+            font-size: 48px;
+            color: @gray-deep;
+        }
+        .search-btn{
+            display: block;
+            font-size: 24px;
+            height: 88px;
+            line-height: 88px;
+            padding: 0 72px 0 24px;
+            box-shadow: 0px 5px 6px 0 #e0e0e0;
+            background-color: #ffffff;
+            position: relative;
+            color: #242424;
+            overflow: hidden;
+        }
+        text {
+            color: gray;
+            overflow-x: hidden;
+        }
+        .share-icon {
+            font-size: 44px;
+            position: absolute;
+            right: 20px;
+            color: @gray;
+            cursor: default;
+        }
+    }
+}
+.sharePannel {
+    position: fixed;
+    display: flex;
+    align-items: flex-end;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(110, 110, 110, 0.8);
+    z-index: 99;
+    .content {
+        background: #fff;
+        text-align: center;
+        width: 100%;
+        h3 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            margin: 20px;
+        }
+        li {
+            display: inline-block;
+            text-align: center;
+            width: 32%;
+            padding-bottom: 25px;
+        }
+        a {
+            isplay: block;
+            color: #000;
+        }
+        span {
+            display: inline-block;
+            width: 128px;
+            height: 128px;
+            background: url(https://d3bz8bbmpebim8.cloudfront.net/image/product_social_icon_big_bg.png) no-repeat;
+            background-size: 768px;
+            cursor: pointer;
+        }
+        b {
+            font-weight: 400;
+            display: block;
+            padding-top: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .cancelBtn {
+            border-top: 1px solid #b5c1cb;
+            line-height: 88px;
+            display: block;
+            color: #767d85;
+            font-size: 36px;
+            font-weight: 700;
+            background: #edf2f5;
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 
-import styles from "../index.less"
+import styles from "./recently-viewed.less"
 
 const ItemSpan = props => {
     const hotDisplay = props.hot ? "iconfont" : "dis-none iconfont"
@@ -12,7 +12,7 @@ const ItemSpan = props => {
 }
 
 ItemSpan.propTypes = {
-    hot: PropTypes.string.isRequired
+    hot: PropTypes.bool.isRequired
 }
 
 
@@ -58,7 +58,9 @@ class RecentlyViewed extends Component {
         return (
             <div className={styles.recentlyViewed}>
                 <p>Recently Viewed</p>
-                {this.getItems()}
+                <div className={styles.items}>
+                    {this.getItems()}
+                </div>
             </div>
         )
     }

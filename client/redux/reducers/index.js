@@ -1,17 +1,19 @@
 import { routerReducer as routing } from "react-router-redux"
 import { combineReducers } from "redux"
-import todos from "./todos"
 import fetch from "./fetch"
-import publicDetail from "./detail"
-import counter from "./counter"
+import ProductReducers from "./ProductReducers"
+import CityReducer from "./CityReducer"
+import ToursReducers from "./ToursReducers"
+import listReducers from "./listReducers"
 
 
 const rootReducer = combineReducers({
-    todos,
     fetch,
-    publicDetail,
     routing,
-    counter
+    CityReducer,
+    ProductReducers,
+    ToursReducers,
+    listReducers
 })
 
 export default rootReducer

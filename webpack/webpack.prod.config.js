@@ -2,6 +2,7 @@ const fs = require("fs")
 const webpack = require("webpack")
 const path = require("path")
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin")
 const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const pxtorem = require("postcss-pxtorem")
@@ -40,19 +41,29 @@ const clientConfig = {
                         presets: [["react"], ["es2015", { modules: false }], ["stage-0"]]
                     }
                 }]
-            },
-            {
+            }, {
                 test: /\.less$/,
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss-loader!less-loader"
+                    use: [
+                        "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                        "postcss-loader",
+                        "less-loader"
+                    ]
                 })
-            },
-            {
+            }, {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                        "postcss-loader"
+                    ]
+                })
+            }, {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
                 use: "url-loader?limit=8000&name=[name].[hash:base64:8].[ext]"
-            },
-            {
+            }, {
                 test: /\.html$/,
                 use: "html-loader?minimize=false"
             }
@@ -82,6 +93,8 @@ const clientConfig = {
             names: ["vendor", "manifest"],
             filename: "[name].[chunkhash:8].js"
         }),
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: false }),
+        new OptimizeCssAssetsPlugin(),
         new webpack.optimize.UglifyJsPlugin({ // compress js
             compress: {
                 warnings: false
@@ -108,7 +121,6 @@ const clientConfig = {
             //     return order1 - order2
             // }
         }),
-        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: true }),
         new CodeCheckPlugin(path.resolve(__dirname, "..")), // add git hook
         new CopyFilePlugin([
             { from: path.resolve(__dirname, "../client/public"), to: "../public" }
@@ -152,10 +164,23 @@ const serverConfig = {
             }]
         }, {
             test: /\.less$/,
-            use: [
-                "css-loader/locals?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
-                "less-loader"
-            ]
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: [
+                    "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                    "postcss-loader",
+                    "less-loader"
+                ]
+            })
+        }, {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: [
+                    "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                    "postcss-loader"
+                ]
+            })
         }, {
             test: /\.(jpg|png|gif|webp)$/,
             use: "url-loader?limit=8000"
@@ -167,6 +192,19 @@ const serverConfig = {
     },
     externals: getExternals(),
     plugins: [
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                context: __dirname,
+                postcss: [
+                    autoprefixer({
+                        browsers: ["last 2 versions", "Firefox ESR", "> 1%", "ie >= 8", "iOS >= 8", "Android >= 4"]
+                    }),
+                    pxtorem({ rootValue: 100, propWhiteList: [] })
+                ]
+            }
+        }),
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: false }),
+        new OptimizeCssAssetsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false },
             comments: false

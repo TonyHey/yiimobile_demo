@@ -1,0 +1,121 @@
+@import url("../../assets/less/constant.less");
+
+.cancel {
+    display: flex;
+    justify-content: flex-end;
+    padding: 28px;
+}
+.cancel-icon {
+    font-size: 120px;
+    color: @gray-light;
+}
+
+.logo-wraper {
+    display: flex;
+    justify-content: center;
+    .logo {
+        width: 50%;
+    }
+}
+.content {
+    padding-bottom: 128px;
+}
+.input-wraper {
+    display: flex;
+    justify-content: center;
+    margin-top: 64px;
+    .mail-wraper, .pwd-wraper {
+        display: flex;
+        align-items: center;
+        position: relative;
+        width: 70vw;
+        margin: 0 auto;
+    }
+    .mail, .password {
+        position: absolute;
+        left: 0px;
+        width: 64px;
+    }
+    input[type="text"] {
+        display: block;
+        width: 100%;
+        font-size: 48px;
+        height: 128px;
+        text-indent: 88px;
+        border-bottom: 1px solid @gray-deep;
+        outline: none;
+    }
+    input[type="password"] {
+        display: block;
+        position:absolute;
+        width: 100%;
+        font-size: 48px;
+        height: 128px;
+        text-indent: 88px;
+        border-bottom: 1px solid @gray-deep;
+        outline: none;
+    }
+    text {
+        position: absolute;
+        right: 10px;
+        user-select: none;
+    }
+    input[type="submit"] {
+        display: block;
+        width: 80vw;
+        line-height: 88px;
+        color: #FFFFFF;
+        background-color: @blue-deep;
+        border-radius: 10px;
+        margin: 48px auto 0;
+    }
+    .warning-msg {
+        width: 70vw;
+        margin: 0 auto;
+        padding-top: 10px;
+        font-size: 32px;
+        height: 48px;
+        color: #FA1515;
+        span {
+            color: @black;
+            float: right;
+        }
+    }
+}
+
+.login-footer {
+    width: 70vw;
+    margin: 0 auto 64px;
+    text-align: center;
+    p {
+        color: @gray-light;
+        font-size: 48px;
+    }
+    .socialItems {
+        display: inline-flex;
+        justify-content: center;
+        margin-top: 48px;
+        img {
+            width: 128px;
+        }
+    }
+    .cut-off {
+        margin: 64px 0;
+        line-height: 1px;
+        border-left: 30vw solid #ddd;
+        border-right: 30vw solid #ddd;
+        text-align: center;
+        font-size: 48px;
+        color: @gray-light;
+        p {
+            position: relative;
+            bottom: 10px;
+        }
+    }
+    .mail-sign {
+        a {
+            font-size: 42px;
+        }
+    }
+}
+

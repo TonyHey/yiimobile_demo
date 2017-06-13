@@ -1,5 +1,5 @@
 /**
- * 函数防抖
+ * function debounce
  *
  * @export
  * @param {any} fn
@@ -51,13 +51,13 @@ export function debounce(fn, wait, immediate) {
 }
 
 /**
- * 函数节流
+ * function throttle
  *
  * @export
- * @param {any} fn      传入函数
- * @param {any} wait    间隔时间
+ * @param {any} fn      fn which will be executed
+ * @param {any} wait    timeout time
  * @param {any} scope
- * @returns {function}  传入的函数
+ * @returns {function}
  */
 export function throttle(fn, wait, scope) {
     const waitTime = wait || 250

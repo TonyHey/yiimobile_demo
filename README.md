@@ -107,3 +107,9 @@ use nodemon to run koa2
 npm run dev   			# enables nodemon for the server, will serves app at localhost:8080,
 				# you can change the port in /server/config.js
 ```
+
+## Style guide
+
+Please follow the style guide for the mobile site.  
+
+![ui-guide](https://cloud.githubusercontent.com/assets/6957203/26339740/bc430eae-3fa7-11e7-90b6-fd8bb0822ed7.jpg)

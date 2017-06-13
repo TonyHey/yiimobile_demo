@@ -1,23 +1,52 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title><%- title %></title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <!-- get the device info, to init the viewport, font-size of html elemt, etc.  -->
-        <script>!function(e){function t(a){if(i[a])return i[a].exports;var n=i[a]={exports:{},id:a,loaded:!1};return e[a].call(n.exports,n,n.exports,t),n.loaded=!0,n.exports}var i={};return t.m=e,t.c=i,t.p="",t(0)}([function(e,t){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var i=window;t["default"]=i.flex=function(e,t){var a=e||100,n=t||1,r=i.document,o=navigator.userAgent,d=o.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i),l=o.match(/U3\/((\d+|\.){5,})/i),c=l&&parseInt(l[1].split(".").join(""),10)>=80,p=navigator.appVersion.match(/(iphone|ipad|ipod)/gi),s=i.devicePixelRatio||1;p||d&&d[1]>534||c||(s=1);var u=1/s,m=r.querySelector('meta[name="viewport"]');m||(m=r.createElement("meta"),m.setAttribute("name","viewport"),r.head.appendChild(m)),m.setAttribute("content","width=device-width,user-scalable=no,initial-scale="+u+",maximum-scale="+u+",minimum-scale="+u),r.documentElement.style.fontSize=a/2*s*n+"px"},e.exports=t["default"]}]);flex(100, 1);</script>
-        <link rel="stylesheet" href="/public/style/normalize.min.css">
-        <link rel="stylesheet" type="text/css" href="/public/style/swiper.min.css" />
-        <!-- un-comment this code to enable service worker -->
-        <!-- <script>
+<html <%- htmlAttributes %>>
+
+<head>
+    <meta httpEquiv="content-type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="google" content="notranslate">
+    <meta name="Keywords" content="tours, sightseeing tours, vacation packages, city tours, bus tours, guided tours, helicopter tours, city sightseeing tours, package tours, escorted tours, coach tours, travel bus tours, day trips, attractions, activities" />
+    <meta name="Reply-to" content="service@tours4fun.com" />
+    <meta name="robots" content="index, follow" />
+
+    <%- meta %>
+    <%- title %>
+    <%- link %>
+
+    <link rel="dns-prefetch" href="//d3bz8bbmpebim8.cloudfront.net" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//dn-tffimg.qbox.me" />
+
+    <link rel="shortcut icon" href="/public/img/favicon.ico" type="image/x-icon"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precompresed" sizes="180x180" href="/public/img/apple-touch-icon-precompresed.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/public/img/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precompresed" sizes="120x120" href="/public/img/apple-touch-icon-120x120-precompresed.png" />
+    <link rel="shortcut icon" sizes="192x192" href="/public/img/touch-icon-192x192.png" />
+
+    <!-- get the device info, to init the viewport, font-size of html elemt, etc.  -->
+    <script>
+        !function (e) { function t(a) { if (i[a]) return i[a].exports; var n = i[a] = { exports: {}, id: a, loaded: !1 }; return e[a].call(n.exports, n, n.exports, t), n.loaded = !0, n.exports } var i = {}; return t.m = e, t.c = i, t.p = "", t(0) }([function (e, t) { "use strict"; Object.defineProperty(t, "__esModule", { value: !0 }); var i = window; t["default"] = i.flex = function (e, t) { var a = e || 100, n = t || 1, r = i.document, o = navigator.userAgent, d = o.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i), l = o.match(/U3\/((\d+|\.){5,})/i), c = l && parseInt(l[1].split(".").join(""), 10) >= 80, p = navigator.appVersion.match(/(iphone|ipad|ipod)/gi), s = i.devicePixelRatio || 1; p || d && d[1] > 534 || c || (s = 1); var u = 1 / s, m = r.querySelector('meta[name="viewport"]'); m || (m = r.createElement("meta"), m.setAttribute("name", "viewport"), r.head.appendChild(m)), m.setAttribute("content", "width=device-width,user-scalable=no,initial-scale=" + u + ",maximum-scale=" + u + ",minimum-scale=" + u), r.documentElement.style.fontSize = a / 2 * s * n + "px" }, e.exports = t["default"] }]); flex(100, 1);
+    </script>
+    <!-- <link rel="stylesheet" href="/public/style/normalize.min.css"> -->
+    <!-- un-comment this code to enable service worker -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+    <!-- un-comment this code to enable service worker -->
+    <!-- un-comment this code to enable service worker -->
+    <!-- <script>
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js')
                 .then(registration => console.log('service worker installed', registration.scope))
                 .catch(err => console.log('Error', err));
             }
-        </script> -->
-    </head>
-    <body>
-        <section id="APP"><%- root %></section>
-    </body>
+    </script> -->
+</head>
+
+<body <% bodyAttributes %>>
+    <section id="APP">
+        <%- root %>
+    </section>
+</body>
+
 </html>

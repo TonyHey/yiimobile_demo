@@ -1,11 +1,36 @@
 import fetch from "isomorphic-fetch"
 import configs from "../../../config/index"
 
-const URL = configs.mobileAPI.url
+const queue = []
 
 const reqHeader = new Headers()
 reqHeader.append("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8;")
-// reqHeader.append("X-ACCESS-PLATFORM", "mobile")
+
+// extend strings function
+// add hashCode() to strings
+
+/* eslint-disable no-bitwise, operator-assignment */
+function getHashCode(str) {
+    if (Array.prototype.reduce) {
+        return str.split("").reduce((a, b) => {
+            const c = ((a << 5) - a) + b.charCodeAt(0)
+            return c & c
+        }, 0
+        )
+    }
+    let hash = 0
+    if (str.length === 0) {
+        return hash
+    }
+
+    for (let i = 0; i < str.length; i += 1) {
+        const character = str.charCodeAt(i)
+        hash = ((hash << 5) - hash) + character
+        hash = hash & hash // Convert to 32bit integer
+    }
+    return hash
+}
+/* eslint-enable no-bitwise, operator-assignment */
 
 // add search params
 const handleParams = params => {
@@ -21,51 +46,124 @@ const handleParams = params => {
     return paramsArr.join("&")
 }
 
-const GET = (url, params) => {
-    const query = handleParams(params) === "" ? "" : ("?" + handleParams(params))
+/**
+ * Generate url
+ */
+function getUrl(path, params) {
+    const queryString = handleParams(params)
+    let url = configs.mobileAPI.url + path
+    if (queryString) {
+        url += "?" + queryString
+    }
+    return url
+}
 
-    return fetch(URL + url + query, {
+/**
+ * Generate request hash
+ */
+function getRequestHash(url) {
+    return getHashCode(url)
+}
+
+const showLoadingIndicator = (indicator = null) => {
+    if (indicator) {
+        indicator.show()
+    }
+}
+
+const hideLoadingIndicator = (indicator = null) => {
+    if (indicator) {
+        indicator.hide()
+    }
+}
+
+/**
+ * Remove url from queue
+ */
+function removeFromQueue(url) {
+    const hash = getRequestHash(url)
+    const index = queue.indexOf(hash)
+    if (queue.length > 0 && index > -1) {
+        queue.splice(index, 1)
+    }
+    if (queue.length === 0) {
+        hideLoadingIndicator()
+    }
+}
+
+
+/**
+ * Add to requests queue
+ */
+function addToQueue(url) {
+    const hash = getRequestHash(url)
+    queue.push(hash)
+    showLoadingIndicator()
+}
+
+/**
+ * Get api
+ *
+ * @param string endpoint
+ * @param object params Query params
+ * @param boolean cache Should cache request
+ * @param boolean loadingIndicator loading indicator
+ */
+export const get = (endpoint, params = {}, cache = false, loadingIndicator = true) => {
+    const url = getUrl(endpoint, params)
+
+    console.log("url: ", url)
+
+    const headers = {
         method: "GET",
         headers: reqHeader
-    }).then(rs => rs.json()).then(json => {
-        if (json.ok) {
-            console.log(json)
-            return json
+    }
+    return fetch(url, headers).then(response => {
+        if (loadingIndicator) {
+            removeFromQueue(url)
         }
-        Promise.reject("api error : " + json.message)
-        return false
+        return Promise.resolve(response.json())
     }).catch(err => {
-        Promise.reject("api request failed:" + err)
+        if (loadingIndicator) {
+            removeFromQueue(url)
+        }
+        return Promise.reject("Api calling error" + err)
     })
 }
 
-const POST = (url, params) => {
-    const headerParams = {
+/**
+ * Post data to api
+ *
+ * @param endpoint
+ * @param params
+ *
+ * @return Promise
+ */
+export const post = (endpoint, payload = {}, params = {}, loadingIndicator = true) => {
+    const headers = {
         method: "POST",
         body: handleParams(params),
         headers: reqHeader
     }
 
-    return fetch(URL + url, headerParams)
-    .then(rs => rs.json())
-    .then(json => {
-        if (json.ok) {
-            return json
-        }
-        Promise.reject(json.message)
-        return false
-    })
-    .catch(err => {
-        Promise.reject("api request failed:" + err)
-    })
-}
+    const url = getUrl(endpoint, params)
 
-const API = {
-    homeBanner: () => GET("/config/index/v1"),
-    hotSearch: () => GET("/resource/popularSearch"),
-    search: params => GET("/search/entry", params),
-    testPost: params => POST("url", params),
-    testGet: () => GET("/common/getCountries")
-}
+    if (loadingIndicator) {
+        addToQueue(url)
+    }
 
-export default API
+    return fetch(url, headers)
+        .then(rs => rs.json())
+        .then(data => {
+            if (loadingIndicator) {
+                removeFromQueue(url)
+            }
+            return data
+        })
+        .catch(err => {
+            if (loadingIndicator) {
+                removeFromQueue(url)
+            }
+            Promise.reject("api request failed:" + err)
+        })
+}

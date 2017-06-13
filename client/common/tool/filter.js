@@ -119,3 +119,19 @@ export function ucwords(content) {
 export function clearhtml(content) {
     return content.replace(/(<([^>]+)>)/ig, "")
 }
+
+export function urlPrettify(input) {
+    if (input) {
+        return input.toLowerCase().replace(/ /g, "-")
+    }
+    return input
+}
+
+export function urlUnPrettify(input) {
+    if (input) {
+        return input.replace(/(?!-$)-|_/g, " ").replace(/\w\S*/g, txt =>
+            txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        )
+    }
+    return input
+}

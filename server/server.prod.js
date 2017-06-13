@@ -4,12 +4,13 @@ import Koa from "koa"
 import logger from "koa-logger"
 import server from "koa-static"
 import views from "koa-views"
+import Router from "koa-router"
 
 import config from "./config"
-import routers from "./routers"
 import clientRoute from "./middlewares/clientRoute"
 
 const app = new Koa()
+const router = new Router()
 
 // Logger
 app.use(logger())
@@ -20,7 +21,7 @@ app.use(views(path.resolve(__dirname, "../dist/client/views"), { map: { html: "e
 
 // Routes
 app.use(clientRoute)
-routers(app)
+app.use(router.routes(), router.allowedMethods())
 
 app.listen(config.port, () => {
     console.log("listen port " + config.port)

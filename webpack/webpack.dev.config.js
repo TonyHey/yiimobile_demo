@@ -2,7 +2,7 @@ const webpack = require("webpack")
 const path = require("path")
 const pxtorem = require("postcss-pxtorem")
 const autoprefixer = require("autoprefixer")
-// const ExtractTextPlugin = require("extract-text-webpack-plugin")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 const CopyFilePlugin = require("copy-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 // const BrowserSyncPlugin = require("browser-sync-webpack-plugin")
@@ -45,10 +45,24 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: [
-                    "style-loader",
-                    "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]!postcss-loader!less-loader"
-                ]
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                        "postcss-loader",
+                        "less-loader"
+                    ]
+                })
+            },
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: [
+                        "css-loader?modules&camelCase&importLoaders=1&localIdentName=[hash:base64:8]",
+                        "postcss-loader"
+                    ]
+                })
             },
             {
                 test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/,
@@ -96,8 +110,8 @@ module.exports = {
         new ProgressBarPlugin({ summary: false }), // build progress bar
         new CopyFilePlugin([
             { from: path.resolve(__dirname, "../client/public"), to: "./public" }
-        ])
+        ]),
         // new BrowserSyncPlugin(browserSyncConfig)
-        // new ExtractTextPlugin("[name].[contenthash:8].css", {allChunks: true})
+        new ExtractTextPlugin({ filename: "[name].[contenthash:8].css", allChunks: true })
     ]
 }
